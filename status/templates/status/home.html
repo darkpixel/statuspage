@@ -21,14 +21,15 @@
         <div class="pull-right"><img src="{{ STATUS_LOGO_URL }}" /></div>
     </div>
     {% endif %}
-
     <ul class="list-group components">
         {% for incident in incident_list %}
             <li class="list-group-item component">
                 <h4><i class="glyphicon fa {{ incident.status.icon }}"></i> {{ incident.name }} <small class="text-{{ incident.status.type }}">{{ incident.status.name }}</small></h4>
-                <p><div class="pull-left" style="padding-right: 10px;">{% avatar incident.user 36 %}</div>{{ incident.description }}</p>
+                <p><div class="pull-left" style="padding-right: 10px;">{% avatar request.user 36 %}</div>{{ incident.description|linebreaksbr|urlize }}</p>
                 <p>Updated {{ incident.updated|timesince }} ago by {{ incident.user.username }}</p>
             </li>
         {% endfor %}
     </ul>
+</ul>
+>>>>>>> da54e4c... Line breaks and linkification.  Closes GH-3 and closes GH-4
 {% endblock %}
