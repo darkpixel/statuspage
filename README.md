@@ -21,9 +21,14 @@ Heroku / Dokku
 * Push it to Dokku or Heroku
 * Set the DATABASE_URL variable as appropriate
 * Set the variable PRODUCTION to 'True'
+<<<<<<< HEAD
 * Optionally set the STATUS_LOGO_URL to the logo you would like displayed on the status page
 * Optionally Set the STATUS_TICKET_URL to the URL of your ticket system
 * Optionally Set the STATUS_TITLE variable to something appropriate for the page title
+=======
+* Optionally set the LOGO_URL to the logo you would like displayed on the status page
+* Optionally Set the TICKET_URL to the URL of your ticket system
+>>>>>>> Quick and ugly setup instructions
 * Make sure you run: python manage.py migrate
 
 
@@ -38,6 +43,7 @@ uWSGI
 * The following should be sufficient as a UWSGI config:
 * Make sure you run: python manage.py migrate
 
+<<<<<<< HEAD
 ```
 [uwsgi]
 plugins=python
@@ -51,12 +57,29 @@ home=/var/hosting/unconfigured.org/virtualenv
 uid=statuspage
 gid=statuspage
 ```
+=======
+    [uwsgi]
+    plugins=python
+    chdir=/var/hosting/unconfigured.org/statuspage
+    module=statuspage.wsgi:application
+    socket=127.0.0.1:9000
+    env=PRODUCTION=True
+    env=DJANGO_SETTINGS_MODULE=statuspage.settings
+    env=DATABASE_URL=sqlite:////var/hosting/unconfigured.org/statuspage.db
+    home=/var/hosting/unconfigured.org/virtualenv
+    uid=statuspage
+    gid=statuspage
+>>>>>>> Quick and ugly setup instructions
 
 
 Locally using virtualenvwrapper
 -------------------------------
 * mkvirtualenv statuspage
+<<<<<<< HEAD
 * edit ~/.virtualenvs/statuspage/bin/postactivate to export DATABASE_URL, and optionally STATUS_LOGO_URL, STATUS_TICKET_URL, and STATUS_TITLE
+=======
+* edit ~/.virtualenvs/statuspage/bin/postactivate to export DATABASE_URL, and optionally LOGO_URL and TICKET_URL
+>>>>>>> Quick and ugly setup instructions
 * Check out the code from github
 * pip install -r requirements.txt
 * python manage.py migrate
