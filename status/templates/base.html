@@ -1,0 +1,51 @@
+{% load avatar_tags %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta name="AUTHOR" content="Aaron C. de Bruyn" />
+        <meta name="AUTHOR" content="Kyle L. Huff" />
+        <meta name="RATING" content="General" />
+        <meta name="ROBOTS" content="index, follow" />
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="statuspage">
+        <meta name="signet:authors" content="Aaron C. de Bruyn, Kyle L. Huff">
+        <meta name="signet:links" content="http://github.com/darkpixel/statuspage">
+        <script src="//oss.maxcdn.com/signet/0.4.4/signet.min.js"></script>
+        <title>Status{% block title %}{% if STATUS_TITLE %} - {{ STATUS_TITLE }}{% endif %}{% endblock %}</title>
+        <link href="//maxcdn.bootstrapcdn.com/bootswatch/3.2.0/yeti/bootstrap.min.css" rel="stylesheet"/>
+        <link href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.2.1/css/material.min.css" rel="stylesheet"/>
+        <link href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.2.1/css/material-wfont.min.css" rel="stylesheet"/>
+        <link href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.2.1/css/ripples.min.css" rel="stylesheet"/>
+        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+        {% block exthead %}{% endblock %}
+    </head>
+    <body style="padding-bottom: 70px;">
+        <div class="container">
+            {% block content %}
+            {% endblock %}
+        </div>
+        <div class="navbar navbar-fixed-bottom text-info" style="background-color: transparent;">
+            <footer>
+                <p class="text-center">
+                    <small>
+                        <A HREF="https://github.com/darkpixel/statuspage/">statuspage</A> by <A HREF="https://github.com/darkpixel/">Aaron C. de Bruyn</A> &lt;aaron@heyaaron.com&gt; and
+                        <A HREF="https://github.com/kylehuff">Kyle L. Huff</A> &lt;gitcode@curetheitch.com&gt; &lt;&gt;&lt;
+                        <A HREF="{% url 'status:dashboard' %}">admin</A>
+                    </small>
+                </p>
+            </footer>
+        </div>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.2.1/js/material.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.2.1/js/ripples.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/Chart.js/0.2.0/Chart.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/rivets/0.7.1/rivets.bundled.min.js"></script>
+        <script type="text/javascript">
+            {% block extjs %}{% endblock %}
+        </script>
+        {% block extfoot %}{% endblock %}
+    </body>
+</html>

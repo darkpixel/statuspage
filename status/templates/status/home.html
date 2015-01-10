@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% load avatar_tags %}
+
+{% block content %}
+    {% if incident_list %}
+        {% if STATUS_TICKET_URL %}
+            <div class="alert alert-danger">Some systems are experiencing issues.  If your issue is not listed below, please <A class="" HREF="{{ STATUS_TICKET_URL }}"><i class="mdi-image-edit"></i>turn in a ticket</A></div>
+        {% else %}
+            <div class="alert alert-danger">Some systems are experiencing issues.</div>
+        {% endif %}
+    {% else %}
+        {% if STATUS_TICKET_URL %}
+            <div class="alert alert-success">There are no known issues at this time.  If you are having issues, please <A class="btn-primary" HREF="{{ STATUS_TICKET_URL }}"><i class="mdi-image-edit"></i>turn in a ticket</A></div>
+        {% else %}
+            <div class="alert alert-success">There are no known issues at this time.</div>
+        {% endif %}
+    {% endif %}
+
+    {% if STATUS_LOGO_URL %}
+    <div>
+        <div class="pull-right"><img src="{{ STATUS_LOGO_URL }}" /></div>
+    </div>
+    {% endif %}
+
+    <ul class="list-group components">
+        {% for incident in incident_list %}
+            <li class="list-group-item component">
+                <h4><i class="glyphicon fa {{ incident.status.icon }}"></i> {{ incident.name }} <small class="text-{{ incident.status.type }}">{{ incident.status.name }}</small></h4>
+                <p><div class="pull-left" style="padding-right: 10px;">{% avatar incident.user 36 %}</div>{{ incident.description }}</p>
+                <p>Updated {{ incident.updated|timesince }} ago by {{ incident.user.username }}</p>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

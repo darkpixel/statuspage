@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+    {% include "status/menu_partial.html" %}
+
+    <table class="table table-condensed table-bordered table-striped table-hover">
+        <thead>
+            <tr>
+                <td>ID</td>
+                <td>Created</td>
+                <td>Updated</td>
+                <td>User</td>
+                <td>Name</td>
+                <td>Status</td>
+                <td>Description</td>
+                <td></td>
+                <td></td>
+            </tr>
+        </thead>
+        <tbody>
+            {% for incident in incident_list %}
+                <tr>
+                    <td><A HREF="{% url 'status:incident_detail' incident.pk %}">{{ incident.pk }}</A></td>
+                    <td>{{ incident.created }} ({{ incident.created|timesince }} ago)</td>
+                    <td>{{ incident.updated }} ({{ incident.updated|timesince }} ago)</td>
+                    <td>{{ incident.user.username }}</td>
+                    <td>{{ incident.name }}</td>
+                    <td>{{ incident.status.name }}</td>
+                    <td>{{ incident.description|truncatewords:25 }}</td>
+                    <td><A class="btn btn-primary btn-xs" HREF="{% url 'status:incident_edit' incident.pk %}">Edit</A></td>
+                    <td><A class="btn btn-danger btn-xs" HREF="{% url 'status:incident_delete' incident.pk %}">Delete</A></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
