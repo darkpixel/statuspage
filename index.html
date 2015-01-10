@@ -1,0 +1,111 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>statuspage by darkpixel</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>statuspage</h1>
+        <p>A simple self-hosted status page site with an API written in Django under the BSD license</p>
+        <p class="view"><a href="https://github.com/darkpixel/statuspage">View the Project on GitHub <small>darkpixel/statuspage</small></a></p>
+        <ul>
+          <li><a href="https://github.com/darkpixel/statuspage/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/darkpixel/statuspage/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/darkpixel/statuspage">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>
+<a id="statuspage" class="anchor" href="#statuspage" aria-hidden="true"><span class="octicon octicon-link"></span></a>statuspage</h1>
+
+<p>A simple self-hosted open source status page site written in Django</p>
+
+<p>Please file an issue if you have trouble or want to suggest an improvement!  We love to help!
+<a href="https://github.com/darkpixel/statuspage/issues">https://github.com/darkpixel/statuspage/issues</a></p>
+
+<h1>
+<a id="quick-setup" class="anchor" href="#quick-setup" aria-hidden="true"><span class="octicon octicon-link"></span></a>Quick Setup</h1>
+
+<h2>
+<a id="heroku--dokku" class="anchor" href="#heroku--dokku" aria-hidden="true"><span class="octicon octicon-link"></span></a>Heroku / Dokku</h2>
+
+<ul>
+<li>Check out the code from github</li>
+<li>Push it to Dokku or Heroku</li>
+<li>Set the DATABASE_URL variable as appropriate</li>
+<li>Set the variable PRODUCTION to 'True'</li>
+<li>Optionally set the STATUS_LOGO_URL to the logo you would like displayed on the status page</li>
+<li>Optionally Set the STATUS_TICKET_URL to the URL of your ticket system</li>
+<li>Optionally Set the STATUS_TITLE variable to something appropriate for the page title</li>
+<li>Make sure you run: python manage.py migrate</li>
+</ul>
+
+<h2>
+<a id="uwsgi" class="anchor" href="#uwsgi" aria-hidden="true"><span class="octicon octicon-link"></span></a>uWSGI</h2>
+
+<ul>
+<li>Check out the code from github into a directory on your server.</li>
+<li>For this example we assume the code is checked out to '/var/hosting/unconfigured.org/statuspage'</li>
+<li>Create a virtualenv: virtualenv /var/hosting/unconfigured.org/virtualenv</li>
+<li>Activate the virtualenv: . /var/hosting/unconfigured.org/virtualenv/bin/activate</li>
+<li>Install the requirements: pip install -r /var/hosting/unconfigured.org/statuspage/requirements.txt</li>
+<li>The following should be sufficient as a UWSGI config:</li>
+<li>Make sure you run: python manage.py migrate</li>
+</ul>
+
+<pre><code>[uwsgi]
+plugins=python
+chdir=/var/hosting/unconfigured.org/statuspage
+module=statuspage.wsgi:application
+socket=127.0.0.1:9000
+env=PRODUCTION=True
+env=DJANGO_SETTINGS_MODULE=statuspage.settings
+env=DATABASE_URL=sqlite:////var/hosting/unconfigured.org/statuspage.db
+home=/var/hosting/unconfigured.org/virtualenv
+uid=statuspage
+gid=statuspage
+</code></pre>
+
+<h2>
+<a id="locally-using-virtualenvwrapper" class="anchor" href="#locally-using-virtualenvwrapper" aria-hidden="true"><span class="octicon octicon-link"></span></a>Locally using virtualenvwrapper</h2>
+
+<ul>
+<li>mkvirtualenv statuspage</li>
+<li>edit ~/.virtualenvs/statuspage/bin/postactivate to export DATABASE_URL, and optionally STATUS_LOGO_URL, STATUS_TICKET_URL, and STATUS_TITLE</li>
+<li>Check out the code from github</li>
+<li>pip install -r requirements.txt</li>
+<li>python manage.py migrate</li>
+<li>python manage.py runserver</li>
+</ul>
+      </section>
+    </div>
+    <footer>
+      <p>Project maintained by <a href="https://github.com/darkpixel">darkpixel</a></p>
+      <p>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
+    </footer>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-27347456-3");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+  </body>
+</html>
