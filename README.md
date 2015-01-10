@@ -3,6 +3,9 @@ statuspage
 
 A simple self-hosted open source status page site written in Django
 
+Inspired by [Cachet](https://github.com/cachethq/Cachet)
+Cachet is a great product, I simply despise PHP.
+
 
 Please file an issue if you have trouble or want to suggest an improvement!  We love to help!
 https://github.com/darkpixel/statuspage/issues
