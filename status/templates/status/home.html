@@ -24,8 +24,8 @@
     <ul class="list-group components">
         {% for incident in incident_list %}
             <li class="list-group-item component">
-                <h4><i class="glyphicon fa {{ incident.status.icon }}"></i> {{ incident.name }} <small class="text-{{ incident.status.type }}">{{ incident.status.name }}</small></h4>
-                <p><div class="pull-left" style="padding-right: 10px;">{% avatar incident.user 36 %}</div>{{ incident.description|linebreaksbr|urlize }}</p>
+                <h3><i class="glyphicon fa {{ incident.status.icon }}"></i> {{ incident.name }} <small class="text-{{ incident.status.type }}">{{ incident.status.name }}</small></h3>
+                <p><div class="pull-left" style="padding-right: 10px;">{% avatar incident.user 36 %}</div><h4>{{ incident.description|linebreaksbr|urlize }}</h4></p>
                 <p>Updated {{ incident.updated|timesince }} ago by {{ incident.user.username }}</p>
             </li>
         {% endfor %}
