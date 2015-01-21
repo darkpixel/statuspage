@@ -11,6 +11,7 @@ PRODUCTION = os.environ.get('PRODUCTION', False)
 STATUS_TICKET_URL = os.environ.get('STATUS_TICKET_URL', None)
 STATUS_LOGO_URL = os.environ.get('STATUS_LOGO_URL', None)
 STATUS_TITLE = os.environ.get('STATUS_TITLE', None)
+STATUS_ANALYTICS = os.environ.get('STATUS_ANALYTICS', None)
 
 TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 
@@ -87,6 +88,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.static',
     'django.contrib.messages.context_processors.messages',
     'django.core.context_processors.request',
+    'status.context_processors.analytics',
 )
 
 MIDDLEWARE_CLASSES = (

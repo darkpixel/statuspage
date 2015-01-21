@@ -12,8 +12,6 @@ class IncidentCreateForm(UserKwargModelFormMixin, forms.ModelForm):
         fields = ['name', 'status', 'description']
 
     def save(self, force_insert=False, force_update=False, commit=True):
-        logger.warn(self)
-        logger.warn(dir(self))
         obj = super(IncidentCreateForm, self).save(commit=False)
         obj.user = self.user
         if commit:
