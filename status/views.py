@@ -2,7 +2,10 @@ from datetime import date, timedelta
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.utils.decorators import method_decorator
-from django.views.generic import CreateView, DeleteView, DetailView, ListView, TemplateView, UpdateView
+from django.views.generic import (
+    CreateView, MonthArchiveView, YearArchiveView, DeleteView, DetailView, ListView, TemplateView,
+    UpdateView
+)
 from braces.views import UserFormKwargsMixin
 from stronghold.decorators import public
 from status.models import Incident
@@ -36,6 +39,27 @@ class IncidentDetailView(DetailView):
     @method_decorator(public)
     def dispatch(self, *args, **kwargs):
         return super(IncidentDetailView, self).dispatch(*args, **kwargs)
+
+
+class IncidentArchiveYearView(YearArchiveView):
+    make_object_list = True
+    queryset = Incident.objects.all()
+    date_field = 'updated'
+
+    @method_decorator(public)
+    def dispatch(self, *args, **kwargs):
+        return super(IncidentArchiveYearView, self).dispatch(*args, **kwargs)
+
+
+class IncidentArchiveMonthView(MonthArchiveView):
+    make_object_list = True
+    queryset = Incident.objects.all()
+    date_field = 'updated'
+    month_format = '%m'
+
+    @method_decorator(public)
+    def dispatch(self, *args, **kwargs):
+        return super(IncidentArchiveMonthView, self).dispatch(*args, **kwargs)
 
 
 class HomeView(TemplateView):

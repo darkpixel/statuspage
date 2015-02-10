@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load avatar_tags %}
+
+{% block content %}
+    {% if request.user.is_logged_in %}
+        {% include "status/menu_partial.html" %}
+    {% else %}
+        <div class="text-center">
+            <A HREF="{% url 'status:home' %}" class="btn btn-primary"><i class="fa fa-home"></i> Home</A>
+        </div>
+    {% endif %}
+    <h1>Archive for {{ year|date:"Y" }}</h1>
+    {% if STATUS_LOGO_URL %}
+    <div>
+        <div class="pull-right"><img src="{{ STATUS_LOGO_URL }}" /></div>
+    </div>
+    {% endif %}
+    <ul class="list-group components">
+        {% for incident in incident_list %}
+            <li class="list-group-item component">
+            <h3><i class="glyphicon fa {{ incident.status.icon }}"></i> <A HREF="{% url 'status:incident_detail' incident.pk %}">{{ incident.name }}</A> <small class="text-{{ incident.status.type }}">{{ incident.status.name }}</small></h3>
+                <p><div class="pull-left" style="padding-right: 10px;">{% avatar incident.user 36 %}</div><h4>{{ incident.description|linebreaksbr|urlize }}</h4></p>
+                <p>Updated {{ incident.updated|timesince }} ago by {{ incident.user.username }} <A HREF="{% url 'status:incident_detail' incident.pk %}">Details</A></p>
+            </li>
+        {% endfor %}
+    </ul>
+</ul>
+{% endblock %}

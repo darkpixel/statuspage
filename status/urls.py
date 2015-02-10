@@ -4,8 +4,8 @@ from tastypie.api import NamespacedApi
 from status.api import IncidentResource, StatusResource
 from status.models import Incident
 from status.views import (
-    DashboardView, HomeView, IncidentDeleteView, IncidentDetailView,
-    IncidentCreateView, IncidentUpdateView
+    DashboardView, HomeView, IncidentArchiveMonthView, IncidentArchiveYearView, IncidentDeleteView,
+    IncidentDetailView, IncidentCreateView, IncidentUpdateView
 )
 
 
@@ -23,4 +23,6 @@ urlpatterns = patterns(
     url(r'^incident/(?P<pk>\d+)/$', IncidentDetailView.as_view(model=Incident), name='incident_detail'),
     url(r'^incident/(?P<pk>\d+)/edit/$', IncidentUpdateView.as_view(model=Incident), name='incident_edit'),
     url(r'^incident/(?P<pk>\d+)/delete/$', IncidentDeleteView.as_view(), name='incident_delete'),
+    url(r'^archive/(?P<year>\d{4})/$', IncidentArchiveYearView.as_view(), name="archive_year"),
+    url(r'^archive/(?P<year>\d{4})/(?P<month>\d+)/$', IncidentArchiveMonthView.as_view(month_format='%m'), name="archive_month_numeric"),
 )
