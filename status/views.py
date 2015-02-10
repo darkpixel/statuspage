@@ -2,7 +2,7 @@ from datetime import date, timedelta
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.utils.decorators import method_decorator
-from django.views.generic import CreateView, DeleteView, ListView, TemplateView, UpdateView
+from django.views.generic import CreateView, DeleteView, DetailView, ListView, TemplateView, UpdateView
 from braces.views import UserFormKwargsMixin
 from stronghold.decorators import public
 from status.models import Incident
@@ -28,6 +28,14 @@ class IncidentCreateView(UserFormKwargsMixin, CreateView):
 class IncidentUpdateView(UserFormKwargsMixin, UpdateView):
     model = Incident
     form_class = IncidentCreateForm
+
+
+class IncidentDetailView(DetailView):
+    model = Incident
+
+    @method_decorator(public)
+    def dispatch(self, *args, **kwargs):
+        return super(IncidentDetailView, self).dispatch(*args, **kwargs)
 
 
 class HomeView(TemplateView):
