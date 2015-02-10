@@ -40,7 +40,7 @@ class HomeView(TemplateView):
 
     def get_context_data(self, **kwargs):
         kwargs.update(super(HomeView, self).get_context_data(**kwargs))
-        kwargs.update({'incident_list': Incident.objects.filter(created__gt=date.today() - timedelta(days=7))})
+        kwargs.update({'incident_list': Incident.objects.filter(updated__gt=date.today() - timedelta(days=7))})
 
         if hasattr(settings, 'STATUS_TICKET_URL'):
             kwargs.update({'STATUS_TICKET_URL': settings.STATUS_TICKET_URL})
