@@ -2,7 +2,10 @@ from datetime import date, timedelta
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.utils.decorators import method_decorator
-from django.views.generic import CreateView, DeleteView, ListView, TemplateView, UpdateView
+from django.views.generic import (
+    CreateView, MonthArchiveView, YearArchiveView, DeleteView, DetailView, ListView, TemplateView,
+    UpdateView
+)
 from braces.views import UserFormKwargsMixin
 from stronghold.decorators import public
 from status.models import Incident
@@ -30,6 +33,35 @@ class IncidentUpdateView(UserFormKwargsMixin, UpdateView):
     form_class = IncidentCreateForm
 
 
+class IncidentDetailView(DetailView):
+    model = Incident
+
+    @method_decorator(public)
+    def dispatch(self, *args, **kwargs):
+        return super(IncidentDetailView, self).dispatch(*args, **kwargs)
+
+
+class IncidentArchiveYearView(YearArchiveView):
+    make_object_list = True
+    queryset = Incident.objects.all()
+    date_field = 'updated'
+
+    @method_decorator(public)
+    def dispatch(self, *args, **kwargs):
+        return super(IncidentArchiveYearView, self).dispatch(*args, **kwargs)
+
+
+class IncidentArchiveMonthView(MonthArchiveView):
+    make_object_list = True
+    queryset = Incident.objects.all()
+    date_field = 'updated'
+    month_format = '%m'
+
+    @method_decorator(public)
+    def dispatch(self, *args, **kwargs):
+        return super(IncidentArchiveMonthView, self).dispatch(*args, **kwargs)
+
+
 class HomeView(TemplateView):
     http_method_names = ['get', ]
     template_name = 'status/home.html'
@@ -40,7 +72,7 @@ class HomeView(TemplateView):
 
     def get_context_data(self, **kwargs):
         kwargs.update(super(HomeView, self).get_context_data(**kwargs))
-        kwargs.update({'incident_list': Incident.objects.filter(created__gt=date.today() - timedelta(days=7))})
+        kwargs.update({'incident_list': Incident.objects.filter(updated__gt=date.today() - timedelta(days=7))})
 
         if hasattr(settings, 'STATUS_TICKET_URL'):
             kwargs.update({'STATUS_TICKET_URL': settings.STATUS_TICKET_URL})

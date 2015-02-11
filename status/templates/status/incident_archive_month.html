@@ -1,24 +1,15 @@
 {% extends "base.html" %}
 {% load avatar_tags %}
-{% block exthead %}
-    <meta http-equiv="refresh" content="60">
-{% endblock %}
 
 {% block content %}
-    {% if incident_list %}
-        {% if STATUS_TICKET_URL %}
-            <div class="alert alert-danger">Some systems are experiencing issues.  If your issue is not listed below, please <A class="" HREF="{{ STATUS_TICKET_URL }}"><i class="mdi-image-edit"></i>turn in a ticket</A></div>
-        {% else %}
-            <div class="alert alert-danger">Some systems are experiencing issues.</div>
-        {% endif %}
+    {% if request.user.is_logged_in %}
+        {% include "status/menu_partial.html" %}
     {% else %}
-        {% if STATUS_TICKET_URL %}
-            <div class="alert alert-success">There are no known issues at this time.  If you are having issues, please <A class="btn-primary" HREF="{{ STATUS_TICKET_URL }}"><i class="mdi-image-edit"></i>turn in a ticket</A></div>
-        {% else %}
-            <div class="alert alert-success">There are no known issues at this time.</div>
-        {% endif %}
+        <div class="text-center">
+            <A HREF="{% url 'status:home' %}" class="btn btn-primary"><i class="fa fa-home"></i> Home</A>
+        </div>
     {% endif %}
-
+    <h1>Archive for {{ month|date:"F Y" }}</h1>
     {% if STATUS_LOGO_URL %}
     <div>
         <div class="pull-right"><img src="{{ STATUS_LOGO_URL }}" /></div>
@@ -35,3 +26,4 @@
     </ul>
 </ul>
 {% endblock %}
+
