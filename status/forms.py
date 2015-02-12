@@ -9,7 +9,7 @@ logger = logging.getLogger(__name__)
 class IncidentCreateForm(UserKwargModelFormMixin, forms.ModelForm):
     class Meta:
         model = Incident
-        fields = ['name', 'status', 'description']
+        fields = ['name']
 
     def save(self, force_insert=False, force_update=False, commit=True):
         obj = super(IncidentCreateForm, self).save(commit=False)

@@ -47,17 +47,43 @@ class Incident(BaseModel):
     """ Creates an incident.  Incidents are displayed at the top of the page until closed. """
     user = models.ForeignKey(settings.AUTH_USER_MODEL)
     name = models.CharField(max_length=255)
-    status = models.ForeignKey(Status)
-    description = models.TextField()
 
     def __unicode__(self):
-        return "%s - %s - %s: %s" % (self.user, self.status, self.name, self.description)
+        return "%s - %s" % (self.user, self.name)
 
     def get_absolute_url(self):
         return reverse('status:incident_detail', args=[self.pk, ])
 
+    def get_latest_update(self):
+        return self.incidentupdate_set.latest()
 
     class Meta:
+        get_latest_by = 'created'
         verbose_name = 'Incident'
         verbose_name_plural = 'Incidents'
         ordering = ['-created', ]
+
+
+class IncidentUpdate(BaseModel):
+    """ Updates about an incident. """
+    incident = models.ForeignKey(Incident)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL)
+    status = models.ForeignKey(Status)
+    description = models.TextField()
+
+    def __unicode__(self):
+        return "%s - %s: %s" % (self.user, self.status, self.description)
+
+    def get_absolute_url(self):
+        return reverse('status:incident_detail', args=[self.incident.pk, ])
+
+    class Meta:
+        get_latest_by = 'created'
+        verbose_name = 'Incident Update'
+        verbose_name_plural = 'Incident Updates'
+        ordering = ['-created', ]
+
+    def save(self, *args, **kwargs):
+        """ Update the parent incident update time too. """
+        self.incident.updated = timezone.now()
+        super(IncidentUpdate, self).save(*args, **kwargs)

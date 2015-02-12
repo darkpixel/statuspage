@@ -5,33 +5,34 @@
 {% endblock %}
 
 {% block content %}
-    {% if incident_list %}
-        {% if STATUS_TICKET_URL %}
-            <div class="alert alert-danger">Some systems are experiencing issues.  If your issue is not listed below, please <A class="" HREF="{{ STATUS_TICKET_URL }}"><i class="mdi-image-edit"></i>turn in a ticket</A></div>
-        {% else %}
-            <div class="alert alert-danger">Some systems are experiencing issues.</div>
-        {% endif %}
-    {% else %}
-        {% if STATUS_TICKET_URL %}
-            <div class="alert alert-success">There are no known issues at this time.  If you are having issues, please <A class="btn-primary" HREF="{{ STATUS_TICKET_URL }}"><i class="mdi-image-edit"></i>turn in a ticket</A></div>
-        {% else %}
-            <div class="alert alert-success">There are no known issues at this time.</div>
-        {% endif %}
-    {% endif %}
-
     {% if STATUS_LOGO_URL %}
-    <div>
-        <div class="pull-right"><img src="{{ STATUS_LOGO_URL }}" /></div>
-    </div>
+        <div>
+            <div class="pull-right"><img src="{{ STATUS_LOGO_URL }}" /></div>
+        </div>
     {% endif %}
-    <ul class="list-group components">
-        {% for incident in incident_list %}
-            <li class="list-group-item component">
-            <h3><i class="glyphicon fa {{ incident.status.icon }}"></i> <A HREF="{% url 'status:incident_detail' incident.pk %}">{{ incident.name }}</A> <small class="text-{{ incident.status.type }}">{{ incident.status.name }}</small></h3>
-                <p><div class="pull-left" style="padding-right: 10px;">{% avatar incident.user 36 %}</div><h4>{{ incident.description|linebreaksbr|urlize }}</h4></p>
-                <p>Updated {{ incident.updated|timesince }} ago by {{ incident.user.username }} <A HREF="{% url 'status:incident_detail' incident.pk %}">Details</A></p>
-            </li>
-        {% endfor %}
-    </ul>
-</ul>
+    {% if incident_list %}
+        <p class="text-danger">Some systems are experiencing issues.</p>
+    {% endif %}
+    {% for incident in incident_list %}
+        <ul class="list-group components">
+            {% for incident in incident_list %}
+                <li class="list-group-item component">
+                <h3><i class="glyphicon fa {{ incident.get_latest_update.status.icon }}"></i> <A HREF="{% url 'status:incident_detail' incident.pk %}">{{ incident.name }}</A> <small class="text-{{ incident.get_latest_update.status.type }}">{{ incident.get_latest_update.status.name }}</small></h3>
+                    <p><div class="pull-left" style="padding-right: 10px;">{% avatar incident.user 36 %}</div><h4>{{ incident.get_latest_update.description|linebreaksbr|urlize }}</h4></p>
+                    <p>Updated {{ incident.updated|timesince }} ago by {{ incident.user.username }} <A HREF="{% url 'status:incident_detail' incident.pk %}">Details ({{ incident.incidentupdate_set.count }})</A></p>
+                </li>
+            {% endfor %}
+        </ul>
+    {% empty %}
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3">
+                <div class="jumbotron">
+                    <p class="text-success">There are no known issues at this time.</p>
+                    {% if STATUS_TICKET_URL %}
+                        <p><a class="btn btn-primary btn-lg" href="{{ STATUS_TICKET_URL }}" role="button"><i class="glyphicon glyphicon-pencil"></i> New Ticket!</a></p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    {% endfor %}
 {% endblock %}

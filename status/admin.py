@@ -1,5 +1,5 @@
 from django.contrib import admin
-from status.models import Status, Incident
+from status.models import Status, Incident, IncidentUpdate
 
 
 class BaseAdmin(admin.ModelAdmin):
@@ -17,9 +17,15 @@ class StatusAdmin(BaseAdmin):
 
 
 class IncidentAdmin(BaseAdmin):
-    list_display = ['user', 'name', 'status', 'description']
+    list_display = ['created', 'updated', 'user', 'name']
     list_filter = ['user']
+
+
+class IncidentUpdateAdmin(BaseAdmin):
+    list_display = ['created', 'updated', 'incident', 'user', 'status', 'description']
+    list_filter = ['user', 'status']
 
 
 admin.site.register(Status, StatusAdmin)
 admin.site.register(Incident, IncidentAdmin)
+admin.site.register(IncidentUpdate, IncidentUpdateAdmin)
