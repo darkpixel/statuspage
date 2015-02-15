@@ -3,8 +3,6 @@
 {% load bootstrap3 %}
 
 {% block content %}
-    {% include "status/menu_partial.html" %}
-
     <form action="." method="POST">
         {% csrf_token %}
         {% bootstrap_form form %}

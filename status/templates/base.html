@@ -23,6 +23,9 @@
     </head>
     <body style="padding-bottom: 70px;">
         <div class="container">
+            {% block menubar %}
+                {% include "status/partials/menu.html" %}
+            {% endblock %}
             {% block content %}
             {% endblock %}
         </div>

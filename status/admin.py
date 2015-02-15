@@ -13,16 +13,16 @@ class BaseAdmin(admin.ModelAdmin):
 
 
 class StatusAdmin(BaseAdmin):
-    list_display = ['name', 'type', 'icon']
+    list_display = ['pk', 'name', 'type', 'icon']
 
 
 class IncidentAdmin(BaseAdmin):
-    list_display = ['created', 'updated', 'user', 'name']
+    list_display = ['pk', 'created', 'updated', 'user', 'name']
     list_filter = ['user']
 
 
 class IncidentUpdateAdmin(BaseAdmin):
-    list_display = ['created', 'updated', 'incident', 'user', 'status', 'description']
+    list_display = ['pk', 'created', 'updated', 'incident', 'user', 'status', 'description']
     list_filter = ['user', 'status']
 
 

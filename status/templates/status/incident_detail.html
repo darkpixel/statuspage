@@ -7,25 +7,14 @@
 {% endblock %}
 
 {% block content %}
-    {% if request.user.is_authenticated %}
-        {% include "status/menu_partial.html" %}
-    {% else %}
-        <div class="text-left">
-            <A HREF="{% url 'status:home' %}" class="btn btn-primary"><i class="fa fa-home"></i> Home</A>
-        </div>
-    {% endif %}
-    <ul class="list-group components">
-        <li class="list-group-item component">
-            <h4><i class="glyphicon fa {{ incident.get_latest_update.status.icon }}"></i> {{ incident.name }} <small class="text-{{ incident.get_latest_update.status.type }}">{{ incident.get_latest_update.status.name }}</small></h4>
-            <p>Created {{ incident.created|timesince }} ago by {{ incident.user.username }}</p>
-        </li>
-    </ul>
+    {% include "status/partials/incident.html" with hide_more=True hide_detail=True %}
+    <h2>Updates</h2>
     <ul class="list-group components">
         {% for update in incident.incidentupdate_set.all %}
             <li class="list-group-item component">
             <h3><i class="glyphicon fa {{ update.status.icon }}"></i> <small class="text-{{ update.status.type }}">{{ update.status.name }}</small></h3>
                 <p><div class="pull-left" style="padding-right: 10px;">{% avatar update.user 36 %}</div><h4>{{ update.description|linebreaksbr|urlize }}</h4></p>
-                <p>Updated {{ update.updated|timesince }} ago by {{ update.user.username }}</p>
+                <p>Updated {{ update.created|timesince }} ago by {{ update.user.username }}</p>
             </li>
         {% endfor %}
     </ul>

@@ -3,6 +3,8 @@
 {% block exthead %}
     <meta http-equiv="refresh" content="60">
 {% endblock %}
+{% block menubar %}
+{% endblock %}
 
 {% block content %}
     {% if STATUS_LOGO_URL %}
@@ -11,16 +13,12 @@
         </div>
     {% endif %}
     {% if incident_list %}
-        <p class="text-danger">Some systems are experiencing issues.</p>
+        <p class="alert alert-danger">Some systems are experiencing issues.</p>
     {% endif %}
     {% for incident in incident_list %}
         <ul class="list-group components">
             {% for incident in incident_list %}
-                <li class="list-group-item component">
-                <h3><i class="glyphicon fa {{ incident.get_latest_update.status.icon }}"></i> <A HREF="{% url 'status:incident_detail' incident.pk %}">{{ incident.name }}</A> <small class="text-{{ incident.get_latest_update.status.type }}">{{ incident.get_latest_update.status.name }}</small></h3>
-                    <p><div class="pull-left" style="padding-right: 10px;">{% avatar incident.user 36 %}</div><h4>{{ incident.get_latest_update.description|linebreaksbr|urlize }}</h4></p>
-                    <p>Updated {{ incident.updated|timesince }} ago by {{ incident.user.username }} <A HREF="{% url 'status:incident_detail' incident.pk %}">Details ({{ incident.incidentupdate_set.count }})</A></p>
-                </li>
+                {% include "status/partials/incident.html" %}
             {% endfor %}
         </ul>
     {% empty %}

@@ -54,6 +54,9 @@ class Incident(BaseModel):
     def get_absolute_url(self):
         return reverse('status:incident_detail', args=[self.pk, ])
 
+    def get_first_update(self):
+        return self.incidentupdate_set.first()
+
     def get_latest_update(self):
         return self.incidentupdate_set.latest()
 
@@ -86,4 +89,5 @@ class IncidentUpdate(BaseModel):
     def save(self, *args, **kwargs):
         """ Update the parent incident update time too. """
         self.incident.updated = timezone.now()
+        self.incident.save()
         super(IncidentUpdate, self).save(*args, **kwargs)
