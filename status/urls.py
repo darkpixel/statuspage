@@ -4,8 +4,8 @@ from tastypie.api import NamespacedApi
 from status.api import IncidentResource, StatusResource
 from status.models import Incident
 from status.views import (
-    DashboardView, HomeView, IncidentArchiveMonthView, IncidentArchiveYearView, IncidentDeleteView,
-    IncidentDetailView, IncidentCreateView, IncidentUpdateView
+    DashboardView, HomeView, IncidentArchiveMonthView, IncidentArchiveYearView, IncidentCreateView, IncidentDeleteView,
+    IncidentDetailView, IncidentUpdateView, create_incident
 )
 
 
