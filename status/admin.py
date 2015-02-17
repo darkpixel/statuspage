@@ -12,20 +12,18 @@ class BaseAdmin(admin.ModelAdmin):
     save_on_top = True
 
 
+@admin.register(Status)
 class StatusAdmin(BaseAdmin):
     list_display = ['pk', 'name', 'type', 'icon']
 
 
+@admin.register(Incident)
 class IncidentAdmin(BaseAdmin):
     list_display = ['pk', 'created', 'updated', 'user', 'name']
     list_filter = ['user']
 
 
+@admin.register(IncidentUpdate)
 class IncidentUpdateAdmin(BaseAdmin):
     list_display = ['pk', 'created', 'updated', 'incident', 'user', 'status', 'description']
     list_filter = ['user', 'status']
-
-
-admin.site.register(Status, StatusAdmin)
-admin.site.register(Incident, IncidentAdmin)
-admin.site.register(IncidentUpdate, IncidentUpdateAdmin)
