@@ -10,73 +10,49 @@ from django.views.generic import (
     MonthArchiveView, YearArchiveView, CreateView, DeleteView, DetailView, ListView, TemplateView,
     UpdateView
 )
+from extra_views import ModelFormSetView, InlineFormSet, CreateWithInlinesView
 from stronghold.decorators import public
-from status.models import Incident
+from status.models import Incident, IncidentUpdate
 from status.forms import IncidentCreateForm, IncidentFormset
 
 
-class FormsetMixin(object):
-    object = None
-
-    def get(self, request, *args, **kwargs):
-        if getattr(self, 'is_update_view', False):
-            self.object = self.get_object()
-        form_class = self.get_form_class()
-        form = self.get_form(form_class)
-        formset_class = self.get_formset_class()
-        formset = self.get_formset(formset_class)
-        return self.render_to_response(self.get_context_data(form=form, formset=formset))
-
-    def post(self, request, *args, **kwargs):
-        if getattr(self, 'is_update_view', False):
-            self.object = self.get_object()
-        form_class = self.get_form_class()
-        form = self.get_form(form_class)
-        formset_class = self.get_formset_class()
-        formset = self.get_formset(formset_class)
-        if form.is_valid() and formset.is_valid():
-            return self.form_valid(form, formset)
-        else:
-            return self.form_invalid(form, formset)
-
-    def get_formset_class(self):
-        return self.formset_class
-
-    def get_formset(self, formset_class):
-        return formset_class(**self.get_formset_kwargs())
-
-    def get_formset_kwargs(self):
-        kwargs = {
-            'instance': self.object
-        }
-        if self.request.method in ('POST', 'PUT'):
-            kwargs.update({
-                'data': self.request.POST,
-                'files': self.request.FILES,
-            })
-        return kwargs
-
-    def form_valid(self, form, formset):
-        self.object = form.save()
-        formset.instance = self.object
-        formset.save()
-        if hasattr(self, 'get_success_message'):
-            self.get_success_message(form)
-        return redirect(self.object.get_absolute_url())
-
-    def form_invalid(self, form, formset):
-        return self.render_to_response(self.get_context_data(form=form, formset=formset))
+#class IncidentCreateView(CreateView):
+#    template_name = 'status/incident_formset.html'
+#    model = Incident
+#    form_class = IncidentCreateForm
+#
+#    def get_context_data(self, **kwargs):
+#        context = super(IncidentCreateView, self).get_context_data(**kwargs)
+#        if self.request.POST:
+#            context['incidentupdate_form'] = IncidentFormset(self.request.POST, instance=self.object, user=self.request.user)
+#        else:
+#            context['incidentupdate_form'] = IncidentFormset(instance=self.object)
+#        return context
+#
+#    def form_valid(self, form):
+#        context = self.get_context_data()
+#        incidentform = context['incidentupdate_form']
+#        if form.is_valid() and incidentform.is_valid():
+#            self.object = form.save(commit=False)
+#            self.object.user = self.request.user
+#            self.object.save()
+#            incidentform.instance = self.object
+#            incidentform.save()
+#
+#            return HttpResponseRedirect(self.get_success_url())
+#        else:
+#            return self.render_to_response(self.get_context_data(form=form))
 
 
-class IncidentCreateView(FormsetMixin, CreateView):
-    template_name = 'status/incident_formset.html'
+class IncidentUpdateInline(InlineFormSet):
+    model = IncidentUpdate
+
+
+class IncidentCreateView(CreateWithInlinesView):
     model = Incident
     form_class = IncidentCreateForm
-    formset_class = IncidentFormset
-
-    def form_valid(self, form, formset):
-        form.user = self.request.user
-        return super(IncidentCreateView, self).form_valid(form, formset)
+    template_name = 'status/incident_formset.html'
+    inlines = [IncidentUpdateInline]
 
 
 def create_incident(request):

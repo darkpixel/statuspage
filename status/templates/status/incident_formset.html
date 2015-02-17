@@ -6,7 +6,7 @@
     <form action="." method="POST">
         {% csrf_token %}
         {% bootstrap_form form %}
-        {% bootstrap_formset formset %}
+        {{ inlines.as_p }}
         {% buttons %}
             <button type="submit" class="btn btn-primary">
                 {% bootstrap_icon "star" %} Submit
