@@ -12,15 +12,11 @@
             <div class="pull-right"><img src="{{ STATUS_LOGO_URL }}" /></div>
         </div>
     {% endif %}
-    {% if incident_list %}
-        <p class="alert alert-danger">Some systems are experiencing issues.</p>
+    {% if status_level %}
+        <p class="alert alert-{{ status_level }}">{% if status_level == 'success' %}There are no known issues at this time{% else %}Some systems are experiencing issues{% endif %}</p>
     {% endif %}
     {% for incident in incident_list %}
-        <ul class="list-group components">
-            {% for incident in incident_list %}
-                {% include "status/partials/incident.html" with with_callout=True %}
-            {% endfor %}
-        </ul>
+        {% include "status/partials/incident.html" with with_callout=True %}
     {% empty %}
         <div class="row">
             <div class="col-md-6 col-md-offset-3">

@@ -53,6 +53,7 @@ class IncidentDeleteView(DeleteView):
 class IncidentUpdateUpdateView(CreateView):
     model = IncidentUpdate
     form_class = IncidentUpdateCreateForm
+    template_name = 'status/incident_form.html'
 
     def get_success_url(self):
         return reverse('status:incident_detail', args=[self.kwargs['pk']])
@@ -110,16 +111,32 @@ class HomeView(TemplateView):
         return super(HomeView, self).dispatch(*args, **kwargs)
 
     def get_context_data(self, **kwargs):
-        kwargs.update(super(HomeView, self).get_context_data(**kwargs))
-        kwargs.update({'incident_list': Incident.objects.filter(updated__gt=date.today() - timedelta(days=7))})
+        context = super(HomeView, self).get_context_data(**kwargs)
+        incident_list = Incident.objects.filter(updated__gt=date.today() - timedelta(days=7))
+        context.update({
+            'incident_list': incident_list
+        })
 
         if hasattr(settings, 'STATUS_TICKET_URL'):
-            kwargs.update({'STATUS_TICKET_URL': settings.STATUS_TICKET_URL})
+            context.update({'STATUS_TICKET_URL': settings.STATUS_TICKET_URL})
 
         if hasattr(settings, 'STATUS_LOGO_URL'):
-            kwargs.update({'STATUS_LOGO_URL': settings.STATUS_LOGO_URL})
+            context.update({'STATUS_LOGO_URL': settings.STATUS_LOGO_URL})
 
         if hasattr(settings, 'STATUS_TITLE'):
-            kwargs.update({'STATUS_TITLE': settings.STATUS_TITLE})
+            context.update({'STATUS_TITLE': settings.STATUS_TITLE})
 
-        return kwargs
+        status_level = 'success'
+        for incident in incident_list:
+            if incident.get_latest_update().status.type == 'danger':
+                status_level = 'danger'
+                break
+            elif incident.get_latest_update().status.type == 'warning':
+                status_level = 'warning'
+            elif incident.get_latest_update().status.type == 'info' and not status_level == 'warning':
+                status_level = 'info'
+
+        context.update({
+            'status_level': status_level
+        })
+        return context
