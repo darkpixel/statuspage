@@ -2,25 +2,36 @@
 {% load avatar_tags %}
 {% load bootstrap3 %}
 
-{% block content %}
-    {% if request.user.is_logged_in %}
-        {% include "status/menu_partial.html" %}
-    {% else %}
-        <div class="text-center">
-            <A HREF="{% url 'status:home' %}" class="btn btn-primary"><i class="fa fa-home"></i> Home</A>
-        </div>
-    {% endif %}
-    <ul class="list-group components">
-        <li class="list-group-item component">
-            <h4><i class="glyphicon fa {{ incident.status.icon }}"></i> {{ incident.name }} <small class="text-{{ incident.status.type }}">{{ incident.status.name }}</small></h4>
-            <p><div class="pull-left" style="padding-right: 10px;">{% avatar incident.user 36 %}</div>{{ incident.description }}</p>
-            <p>Updated {{ incident.updated|timesince }} ago by {{ incident.user.username }}</p>
-            {% if request.user.is_logged_in %}
-                <div class="pull-right">
-                    <A class="btn btn-primary btn-xs" HREF="{% url 'status:incident_edit' incident.pk %}">Edit</A>
-                    <A class="btn btn-danger btn-xs" HREF="{% url 'status:incident_delete' incident.pk %}">Delete</A>
-                </div>
-            {% endif %}
-        </li>
-    </ul>
+{% block exthead %}
+    <meta http-equiv="refresh" content="60">
 {% endblock %}
+
+{% block content %}
+    <h2>Current Status</h2>
+    {% include "status/partials/incident.html" with hide_more=True hide_detail=True with_callout=True %}
+    <h2>History</h2>
+    <ul class="list-group components">
+        {% for update in incident.incidentupdate_set.all %}
+        <div class="bs-callout bs-callout-{{ update.status.type }}">
+                <li class="list-group-item component">
+                <h3><i class="glyphicon fa {{ update.status.icon }}"></i> <small class="text-{{ update.status.type }}">{{ update.status.name }}</small></h3>
+                    <p><div class="pull-left" style="padding-right: 10px;">{% avatar update.user 36 %}</div><h4>{{ update.description|linebreaksbr|urlize }}</h4></p>
+                    <p>Posted {{ update.created|timesince }} ago by {{ update.user.username }}</p>
+                </li>
+            </div>
+        {% endfor %}
+    </ul>
+    {% if request.user.is_authenticated %}
+    <form action="{% url 'status:incident_update' incident.pk %}" method="POST">
+            {% csrf_token %}
+            {% bootstrap_form form %}
+            {% buttons %}
+                <button type="submit" class="btn btn-primary">
+                    {% bootstrap_icon "star" %} Submit
+                </button>
+            {% endbuttons %}
+        </form>
+    {% endif %}
+{% endblock %}
+
+

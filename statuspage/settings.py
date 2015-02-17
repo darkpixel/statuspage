@@ -113,7 +113,7 @@ WSGI_APPLICATION = 'statuspage.wsgi.application'
 TEMPLATE_DIRS = (
 )
 
-SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
+SESSION_ENGINE = 'django.contrib.sessions.backends.cached_db'
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
