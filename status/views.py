@@ -10,69 +10,32 @@ from django.views.generic import (
     MonthArchiveView, YearArchiveView, CreateView, DeleteView, DetailView, ListView, TemplateView,
     UpdateView
 )
-from extra_views import ModelFormSetView, InlineFormSet, CreateWithInlinesView
 from stronghold.decorators import public
 from status.models import Incident, IncidentUpdate
-from status.forms import IncidentCreateForm, IncidentFormset
-
-
-#class IncidentCreateView(CreateView):
-#    template_name = 'status/incident_formset.html'
-#    model = Incident
-#    form_class = IncidentCreateForm
-#
-#    def get_context_data(self, **kwargs):
-#        context = super(IncidentCreateView, self).get_context_data(**kwargs)
-#        if self.request.POST:
-#            context['incidentupdate_form'] = IncidentFormset(self.request.POST, instance=self.object, user=self.request.user)
-#        else:
-#            context['incidentupdate_form'] = IncidentFormset(instance=self.object)
-#        return context
-#
-#    def form_valid(self, form):
-#        context = self.get_context_data()
-#        incidentform = context['incidentupdate_form']
-#        if form.is_valid() and incidentform.is_valid():
-#            self.object = form.save(commit=False)
-#            self.object.user = self.request.user
-#            self.object.save()
-#            incidentform.instance = self.object
-#            incidentform.save()
-#
-#            return HttpResponseRedirect(self.get_success_url())
-#        else:
-#            return self.render_to_response(self.get_context_data(form=form))
-
-
-class IncidentUpdateInline(InlineFormSet):
-    model = IncidentUpdate
-
-
-class IncidentCreateView(CreateWithInlinesView):
-    model = Incident
-    form_class = IncidentCreateForm
-    template_name = 'status/incident_formset.html'
-    inlines = [IncidentUpdateInline]
+from status.forms import IncidentCreateForm, IncidentUpdateCreateForm
 
 
 def create_incident(request):
     if request.method == 'POST':
         form = IncidentCreateForm(request.POST)
-        if form.is_valid():
-            incident = form.save(commit=False)
-            incident_formset = IncidentFormset(request.POST)
-            if incident_formset.is_valid():
-                incident.user = request.user
-                incident.save()
+        form2 = IncidentUpdateCreateForm(request.POST)
+        if form.is_valid() and form2.is_valid():
+            i = form.save(commit=False)
+            i.user = request.user
+            i.save()
 
-                incident_formset.save()
-                return HttpResponseRedirect('/')
+            f = form2.save(commit=False)
+            f.incident = i
+            f.user = request.user
+            f.save()
+            return HttpResponseRedirect('/')
     else:
         form = IncidentCreateForm()
-        incident_formset = IncidentFormset(instance=Incident())
-    return render_to_response('status/incident_formset.html', {
+        form2 = IncidentUpdateCreateForm()
+
+    return render_to_response('status/incident_create_form.html', {
         'form': form,
-        'incident_formset': incident_formset,
+        'form2': form2,
     }, context_instance=RequestContext(request))
 
 
@@ -87,9 +50,19 @@ class IncidentDeleteView(DeleteView):
         return reverse('status:dashboard')
 
 
-class IncidentUpdateView(UserFormKwargsMixin, UpdateView):
-    model = Incident
-    form_class = IncidentCreateForm
+class IncidentUpdateUpdateView(CreateView):
+    model = IncidentUpdate
+    form_class = IncidentUpdateCreateForm
+
+    def get_success_url(self):
+        return reverse('status:incident_detail', args=[self.kwargs['pk']])
+
+    def form_valid(self, form):
+        i = form.save(commit=False)
+        i.incident = Incident.objects.get(pk=self.kwargs['pk'])
+        i.user = self.request.user
+        i.save()
+        return HttpResponseRedirect(self.get_success_url())
 
 
 class IncidentDetailView(DetailView):
@@ -98,6 +71,13 @@ class IncidentDetailView(DetailView):
     @method_decorator(public)
     def dispatch(self, *args, **kwargs):
         return super(IncidentDetailView, self).dispatch(*args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super(IncidentDetailView, self).get_context_data(**kwargs)
+        context.update({
+            'form': IncidentUpdateCreateForm(),
+        })
+        return context
 
 
 class IncidentArchiveYearView(YearArchiveView):

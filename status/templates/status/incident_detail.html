@@ -21,6 +21,17 @@
             </div>
         {% endfor %}
     </ul>
+    {% if request.user.is_authenticated %}
+    <form action="{% url 'status:incident_update' incident.pk %}" method="POST">
+            {% csrf_token %}
+            {% bootstrap_form form %}
+            {% buttons %}
+                <button type="submit" class="btn btn-primary">
+                    {% bootstrap_icon "star" %} Submit
+                </button>
+            {% endbuttons %}
+        </form>
+    {% endif %}
 {% endblock %}
 
 
