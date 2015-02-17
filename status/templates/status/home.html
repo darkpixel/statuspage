@@ -17,16 +17,13 @@
     {% endif %}
     {% for incident in incident_list %}
         {% include "status/partials/incident.html" with with_callout=True %}
-    {% empty %}
-        <div class="row">
-            <div class="col-md-6 col-md-offset-3">
-                <div class="jumbotron">
-                    <p class="text-success">There are no known issues at this time.</p>
-                    {% if STATUS_TICKET_URL %}
-                        <p><a class="btn btn-primary btn-lg" href="{{ STATUS_TICKET_URL }}" role="button"><i class="glyphicon glyphicon-pencil"></i> New Ticket!</a></p>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
     {% endfor %}
+    {% if STATUS_TICKET_URL %}
+    <div class="row">
+        <div class="col-md-6">
+            <p>If you are having an issue that is not listed above, please turn in a ticket!</p>
+            <p><a class="btn btn-primary btn-lg" href="{{ STATUS_TICKET_URL }}" role="button"><i class="glyphicon glyphicon-pencil"></i> New Ticket!</a></p>
+        </div>
+    </div>
+    {% endif %}
 {% endblock %}
