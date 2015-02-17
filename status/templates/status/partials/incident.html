@@ -1,0 +1,22 @@
+{% load avatar_tags %}
+{% if with_callout %}
+    <div class="bs-callout bs-callout-{{ incident.get_latest_update.status.type }}">
+{% endif %}
+    <h3>
+        <i class="glyphicon fa {{ incident.get_latest_update.status.icon }}"></i>
+        <A HREF="{% url 'status:incident_detail' incident.pk %}">{{ incident.name }}</A>
+        <small class="text-{{ incident.get_latest_update.status.type }}">({{ incident.get_latest_update.status.name }})</small>
+    </h3>
+    <p>
+        {% if not hide_detail %}
+            <h4>{{ incident.get_latest_update.description|linebreaksbr|urlize|truncatewords:30 }}</h4>
+        {% endif %}
+    </p>
+    <p>
+    <div class="pull-left" style="padding-right: 10px;">{% avatar incident.user 36 %}</div>
+    Created {{ incident.created|timesince }} ago by {{ incident.user.username }}<br>
+    Updated {{ incident.updated|timesince }} ago by {{ incident.get_latest_update.user.username }}{% if not hide_more %} <A HREF="{% url 'status:incident_detail' incident.pk %}">Details ({{ incident.incidentupdate_set.count }})</A>{% endif %}
+    </p>
+{% if with_callout %}
+    </div>
+{% endif %}
