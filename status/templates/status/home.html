@@ -18,7 +18,7 @@
     {% for incident in incident_list %}
         <ul class="list-group components">
             {% for incident in incident_list %}
-                {% include "status/partials/incident.html" %}
+                {% include "status/partials/incident.html" with with_callout=True %}
             {% endfor %}
         </ul>
     {% empty %}

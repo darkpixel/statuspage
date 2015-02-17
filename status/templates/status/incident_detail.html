@@ -7,15 +7,18 @@
 {% endblock %}
 
 {% block content %}
-    {% include "status/partials/incident.html" with hide_more=True hide_detail=True %}
-    <h2>Updates</h2>
+    <h2>Current Status</h2>
+    {% include "status/partials/incident.html" with hide_more=True hide_detail=True with_callout=True %}
+    <h2>History</h2>
     <ul class="list-group components">
         {% for update in incident.incidentupdate_set.all %}
-            <li class="list-group-item component">
-            <h3><i class="glyphicon fa {{ update.status.icon }}"></i> <small class="text-{{ update.status.type }}">{{ update.status.name }}</small></h3>
-                <p><div class="pull-left" style="padding-right: 10px;">{% avatar update.user 36 %}</div><h4>{{ update.description|linebreaksbr|urlize }}</h4></p>
-                <p>Updated {{ update.created|timesince }} ago by {{ update.user.username }}</p>
-            </li>
+        <div class="bs-callout bs-callout-{{ update.status.type }}">
+                <li class="list-group-item component">
+                <h3><i class="glyphicon fa {{ update.status.icon }}"></i> <small class="text-{{ update.status.type }}">{{ update.status.name }}</small></h3>
+                    <p><div class="pull-left" style="padding-right: 10px;">{% avatar update.user 36 %}</div><h4>{{ update.description|linebreaksbr|urlize }}</h4></p>
+                    <p>Posted {{ update.created|timesince }} ago by {{ update.user.username }}</p>
+                </li>
+            </div>
         {% endfor %}
     </ul>
 {% endblock %}
