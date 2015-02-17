@@ -84,7 +84,7 @@ class IncidentUpdate(BaseModel):
         get_latest_by = 'created'
         verbose_name = 'Incident Update'
         verbose_name_plural = 'Incident Updates'
-        ordering = ['-created', ]
+        ordering = ['created', ]
 
     def save(self, *args, **kwargs):
         """ Update the parent incident update time too. """
