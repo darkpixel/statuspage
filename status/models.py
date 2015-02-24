@@ -4,7 +4,6 @@ from django.db import models
 from django.utils import timezone
 
 
-
 STATUS_CHOICES = (
     ('success', 'Success'),
     ('info', 'Information'),
@@ -55,10 +54,18 @@ class Incident(BaseModel):
         return reverse('status:incident_detail', args=[self.pk, ])
 
     def get_first_update(self):
-        return self.incidentupdate_set.first()
+        try:
+            first = self.incidentupdate_set.first()
+        except IncidentUpdate.DoesNotExist:
+            first = None
+        return first
 
     def get_latest_update(self):
-        return self.incidentupdate_set.latest()
+        try:
+            latest = self.incidentupdate_set.latest()
+        except IncidentUpdate.DoesNotExist:
+            latest = None
+        return latest
 
     class Meta:
         get_latest_by = 'created'

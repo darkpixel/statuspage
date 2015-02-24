@@ -112,7 +112,7 @@ class HomeView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(HomeView, self).get_context_data(**kwargs)
-        incident_list = Incident.objects.filter(updated__gt=date.today() - timedelta(days=7))
+        incident_list = Incident.objects.filter(updated__gt=date.today() - timedelta(days=7)).order_by('-updated')
         context.update({
             'incident_list': incident_list
         })
@@ -128,13 +128,17 @@ class HomeView(TemplateView):
 
         status_level = 'success'
         for incident in incident_list:
-            if incident.get_latest_update().status.type == 'danger':
-                status_level = 'danger'
-                break
-            elif incident.get_latest_update().status.type == 'warning':
-                status_level = 'warning'
-            elif incident.get_latest_update().status.type == 'info' and not status_level == 'warning':
-                status_level = 'info'
+            try:
+                if incident.get_latest_update().status.type == 'danger':
+                    status_level = 'danger'
+                    break
+                elif incident.get_latest_update().status.type == 'warning':
+                    status_level = 'warning'
+                elif incident.get_latest_update().status.type == 'info' and not status_level == 'warning':
+                    status_level = 'info'
+            except AttributeError:
+                # Unable to get_latest_update(), 'None' has no .status
+                pass
 
         context.update({
             'status_level': status_level
