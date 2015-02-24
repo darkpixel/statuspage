@@ -112,7 +112,7 @@ class HomeView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(HomeView, self).get_context_data(**kwargs)
-        incident_list = Incident.objects.filter(updated__gt=date.today() - timedelta(days=7))
+        incident_list = Incident.objects.filter(updated__gt=date.today() - timedelta(days=7)).order_by('updated')
         context.update({
             'incident_list': incident_list
         })
