@@ -2,10 +2,6 @@
 {% load avatar_tags %}
 {% load bootstrap3 %}
 
-{% block exthead %}
-    <meta http-equiv="refresh" content="60">
-{% endblock %}
-
 {% block content %}
     <h2>Current Status</h2>
     {% include "status/partials/incident.html" with hide_more=True hide_detail=True with_callout=True %}
