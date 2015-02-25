@@ -10,7 +10,7 @@
         <small class="text-{{ incident.get_latest_update.status.type }}">({{ incident.get_latest_update.status.name }})</small>
     </h3>
     <p>
-    <div class="pull-left" style="padding-right: 10px;">{% if incident.get_latest_update.status.user %}{% avatar incident.get_latest_update.status.user 36 %}{% else %}{% avatar incident.user 36 %}{% endif %}</div>
+    <div class="pull-left" style="padding-right: 10px;">{% if incident.get_latest_update.user %}{% avatar incident.get_latest_update.user 36 %}{% else %}{% avatar incident.user 36 %}{% endif %}</div>
     Created {{ incident.created|timesince }} ago by {{ incident.user.username }}<br>
     Updated {{ incident.updated|timesince }} ago by {{ incident.get_latest_update.user.username }}
     </p>
