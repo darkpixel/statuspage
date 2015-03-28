@@ -1,6 +1,6 @@
 Django
+whitenoise
 dj-database-url
-dj-static
 django-avatar
 django-bootstrap3
 django-celery

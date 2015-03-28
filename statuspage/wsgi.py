@@ -16,7 +16,7 @@ except:
     logger.warn('Unable to load Sentry.  Disabled.')
 
 try:
-    from dj_static import Cling, MediaCling
-    application = Cling(MediaCling(application))
+    from whitenoise.django import DjangoWhiteNoise
+    application = DjangoWhiteNoise(application)
 except:
-    logger.warn('Unable to load Cling to serve static files.')
+    logger.warn('Unable to load whitenoise')
