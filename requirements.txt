@@ -1,4 +1,5 @@
 Django
+git+https://github.com/darkpixel/django-uptimerobot.git@fc27ac358a36fc1c06e1f48dbcab17d901bcc018
 whitenoise
 dj-database-url
 django-ordered-model
