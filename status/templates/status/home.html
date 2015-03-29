@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load avatar_tags %}
+{% load uptimerobot_tags %}
 {% block exthead %}
     <meta http-equiv="refresh" content="60">
 {% endblock %}
@@ -7,23 +8,51 @@
 {% endblock %}
 
 {% block content %}
-    {% if STATUS_LOGO_URL %}
-        <div>
-            <div class="pull-right"><img src="{{ STATUS_LOGO_URL }}" /></div>
-        </div>
-    {% endif %}
-    {% if status_level %}
-        <p class="alert alert-{{ status_level }}">{% if status_level == 'success' %}There are no known issues at this time{% else %}Some systems are experiencing issues{% endif %}</p>
-    {% endif %}
-    {% for incident in incident_list %}
-        {% include "status/partials/incident.html" with with_callout=True %}
-    {% endfor %}
-    {% if STATUS_TICKET_URL %}
     <div class="row">
-        <div class="col-md-6">
-            <p>If you are having an issue that is not listed above, please turn in a ticket!</p>
-            <p><a class="btn btn-primary btn-lg" href="{{ STATUS_TICKET_URL }}" role="button"><i class="glyphicon glyphicon-pencil"></i> New Ticket!</a></p>
+        <div class="col-md-12">
+            {% if STATUS_LOGO_URL %}
+                <div>
+                    <div class="pull-right"><img src="{{ STATUS_LOGO_URL }}" /></div>
+                </div>
+            {% endif %}
+            {% if status_level %}
+                <p class="alert alert-{{ status_level }}">{% if status_level == 'success' %}There are no known issues at this time{% else %}Some systems are experiencing issues{% endif %}</p>
+            {% endif %}
         </div>
     </div>
-    {% endif %}
+    <div class="row">
+        <div class="col-md-9">
+            {% for incident in incident_list %}
+                {% include "status/partials/incident.html" with with_callout=True %}
+            {% endfor %}
+            {% if STATUS_TICKET_URL %}
+            <div class="row">
+                <div class="col-md-6">
+                    <p>If you are having an issue that is not listed above, please turn in a ticket!</p>
+                    <p><a class="btn btn-primary btn-lg" href="{{ STATUS_TICKET_URL }}" role="button"><i class="glyphicon glyphicon-pencil"></i> New Ticket!</a></p>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+        {% if component_list %}
+            <div class="col-md-3">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Network Status</h3>
+                    </div>
+                    <div class="panel-body">
+                        <table class="table table-condensed table-hover table-striped table-bordered">
+                            {% for component in component_list %}
+                                <TR>
+                                    <TD class="{% if component.last_status != 'UP' %}danger{% endif %}">
+                                        {{ component.name }}: {{ component.last_status }}
+                                    </TD>
+                                </TR>
+                            {% endfor %}
+                        </table>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
 {% endblock %}

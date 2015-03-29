@@ -42,10 +42,32 @@ class Status(OrderedModel, BaseModel):
         verbose_name_plural = 'Statuses'
 
 
+class Component(BaseModel):
+    name = models.CharField(max_length=255)
+    uptime_robot_id = models.PositiveIntegerField(null=True, blank=True)
+    last_status = models.CharField(max_length=25, null=True, blank=True)
+
+    def update(self):
+        from uptimerobot.uptimerobot import UptimeRobot
+        robot = UptimeRobot()
+        status, uptime = robot.getMonitorById(self.uptime_robot_id)
+        self.last_status = status
+        self.save()
+
+    def __unicode__(self):
+        return u"%s" % (self.name)
+
+    class Meta():
+        verbose_name = 'Component'
+        verbose_name_plural = 'Components'
+        ordering = ['name']
+
+
 class Incident(BaseModel):
     """ Creates an incident.  Incidents are displayed at the top of the page until closed. """
     user = models.ForeignKey(settings.AUTH_USER_MODEL)
     name = models.CharField(max_length=255)
+    component = models.ForeignKey(Component, null=True, blank=True)
     status = models.ForeignKey(Status)
 
     def __unicode__(self):
@@ -72,7 +94,7 @@ class Incident(BaseModel):
         get_latest_by = 'created'
         verbose_name = 'Incident'
         verbose_name_plural = 'Incidents'
-        ordering = ['-created', ]
+        ordering = ['status__order', '-created', ]
 
 
 class IncidentUpdate(BaseModel):

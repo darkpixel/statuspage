@@ -1,4 +1,4 @@
-from datetime import date, timedelta
+from datetime import date, timedelta, datetime
 
 from django.conf import settings
 from django.core.urlresolvers import reverse
@@ -12,8 +12,8 @@ from django.views.generic import (CreateView, DeleteView, DetailView,
                                   TemplateView, YearArchiveView)
 from stronghold.decorators import public
 
-from status.forms import IncidentCreateForm, IncidentUpdateCreateForm
-from status.models import Incident, IncidentUpdate
+from .forms import IncidentCreateForm, IncidentUpdateCreateForm
+from .models import Component, Incident, IncidentUpdate
 
 
 def create_incident(request):
@@ -113,7 +113,7 @@ class HomeView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(HomeView, self).get_context_data(**kwargs)
-        incident_list = Incident.objects.filter(updated__gt=date.today() - timedelta(days=7)).order_by('-updated')
+        incident_list = Incident.objects.filter(updated__gt=date.today() - timedelta(days=7))
         incident_list = Incident.objects.filter(
             (Q(status__order=0) & Q(updated__gt=date.today() - timedelta(days=3))) | Q(status__order__gte=1)
         )
@@ -144,7 +144,15 @@ class HomeView(TemplateView):
                 # Unable to get_latest_update(), 'None' has no .status
                 pass
 
+        #BUG: This needs to be non-blocking
+        for c in Component.objects.filter(updated__lte=datetime.now() - timedelta(minutes=5)):
+            c.update()
+
+        for c in Component.objects.filter(last_status__isnull=True):
+            c.update()
+
         context.update({
-            'status_level': status_level
+            'status_level': status_level,
+            'component_list': Component.objects.all(),
         })
         return context

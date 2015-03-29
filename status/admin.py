@@ -1,9 +1,10 @@
 from django.contrib import admin
 from ordered_model.admin import OrderedModelAdmin
 
-from status.models import Incident, IncidentUpdate, Status
+from status.models import Component, Incident, IncidentUpdate, Status
 
 
+@admin.register(Component)
 class BaseAdmin(admin.ModelAdmin):
 
     """ Base module inherited by all other admin modules to save time setting various defaults. """
