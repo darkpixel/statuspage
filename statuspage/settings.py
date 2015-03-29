@@ -14,6 +14,7 @@ STATUS_TICKET_URL = os.environ.get('STATUS_TICKET_URL', None)
 STATUS_LOGO_URL = os.environ.get('STATUS_LOGO_URL', None)
 STATUS_TITLE = os.environ.get('STATUS_TITLE', None)
 STATUS_ANALYTICS = os.environ.get('STATUS_ANALYTICS', None)
+STATUS_UPTIME_ROBOT_API_KEY = os.environ.get('UPTIME_ROBOT_API_KEY', None)
 
 TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 
