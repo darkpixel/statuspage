@@ -1,6 +1,7 @@
 from django.contrib import admin
-from status.models import Status, Incident, IncidentUpdate
 from ordered_model.admin import OrderedModelAdmin
+
+from status.models import Incident, IncidentUpdate, Status
 
 
 class BaseAdmin(admin.ModelAdmin):

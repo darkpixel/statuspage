@@ -1,5 +1,5 @@
-from braces.views import UserFormKwargsMixin
 from datetime import date, timedelta
+
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.db.models import Q
@@ -7,13 +7,13 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.utils.decorators import method_decorator
-from django.views.generic import (
-    MonthArchiveView, YearArchiveView, CreateView, DeleteView, DetailView, ListView, TemplateView,
-    UpdateView
-)
+from django.views.generic import (CreateView, DeleteView, DetailView,
+                                  ListView, MonthArchiveView,
+                                  TemplateView, YearArchiveView)
 from stronghold.decorators import public
-from status.models import Incident, IncidentUpdate
+
 from status.forms import IncidentCreateForm, IncidentUpdateCreateForm
+from status.models import Incident, IncidentUpdate
 
 
 def create_incident(request):

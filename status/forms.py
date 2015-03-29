@@ -1,8 +1,10 @@
-from django import forms
-from status.models import Incident, IncidentUpdate
-from braces.forms import UserKwargModelFormMixin
-
 import logging
+
+from braces.forms import UserKwargModelFormMixin
+from django import forms
+
+from status.models import Incident, IncidentUpdate
+
 logger = logging.getLogger(__name__)
 
 

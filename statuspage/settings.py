@@ -1,7 +1,9 @@
+import logging
+import logging.config
 import os
+
 import dj_database_url
 
-import logging
 logger = logging.getLogger(__name__)
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
@@ -170,7 +172,7 @@ APPEND_SLASH = True
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
-#EMAIL_BACKEND = 'djcelery_email.backends.CeleryEmailBackend'
+# EMAIL_BACKEND = 'djcelery_email.backends.CeleryEmailBackend'
 EMAIL_HOST = os.environ.get('MAIL_SERVER', None)
 EMAIL_PORT = os.environ.get('MAIL_PORT', 25)
 EMAIL_HOST_USER = os.environ.get('MAIL_USER', None)
@@ -250,6 +252,4 @@ LOGGING = {
     },
 }
 
-import logging.config
 logging.config.dictConfig(LOGGING)
-

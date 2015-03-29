@@ -1,9 +1,8 @@
 from django.conf import settings
-from django.conf.urls import patterns, include, url
+from django.conf.urls import include, patterns, url
 from django.contrib import admin
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
-from django.views.generic import TemplateView, ListView, DetailView
-
+from django.views.generic import DetailView, ListView, TemplateView
 
 admin.autodiscover()
 
@@ -30,5 +29,3 @@ if settings.DEBUG:
     urlpatterns += patterns('',
         url(r'^__debug__/', include(debug_toolbar.urls)),
     )
-
-

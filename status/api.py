@@ -1,11 +1,14 @@
+import logging
+
+from django.contrib.auth.models import \
+    User  # BUG: Import the correct user object from settings.py
 from tastypie.authentication import ApiKeyAuthentication
 from tastypie.authorization import Authorization
-from tastypie.resources import NamespacedModelResource, fields, ALL, ALL_WITH_RELATIONS
-from django.contrib.auth.models import User #BUG: Import the correct user object from settings.py
+from tastypie.resources import (ALL, ALL_WITH_RELATIONS,
+                                NamespacedModelResource, fields)
 
 from .models import Incident, Status
 
-import logging
 logger = logging.getLogger(__name__)
 
 
@@ -49,4 +52,3 @@ class IncidentResource(ReadOnlyFieldNamespacedModelResource):
             'updates': ALL,
             'status': ALL_WITH_RELATIONS,
         }
-

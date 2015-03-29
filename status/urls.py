@@ -1,13 +1,13 @@
-from django.conf.urls import patterns, url, include
+from django.conf.urls import include, patterns, url
 from django.views.decorators.cache import cache_page
 from tastypie.api import NamespacedApi
+
 from status.api import IncidentResource, StatusResource
 from status.models import Incident
-from status.views import (
-    DashboardView, HomeView, IncidentArchiveMonthView, IncidentArchiveYearView, IncidentDeleteView,
-    IncidentDetailView, IncidentUpdateUpdateView, create_incident
-)
-
+from status.views import (DashboardView, HomeView, IncidentArchiveMonthView,
+                          IncidentArchiveYearView, IncidentDeleteView,
+                          IncidentDetailView, IncidentUpdateUpdateView,
+                          create_incident)
 
 v1_api = NamespacedApi(api_name='v1', urlconf_namespace='status')
 v1_api.register(StatusResource())

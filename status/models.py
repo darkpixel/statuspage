@@ -4,7 +4,6 @@ from django.db import models
 from django.utils import timezone
 from ordered_model.models import OrderedModel
 
-
 STATUS_CHOICES = (
     ('success', 'Success'),
     ('info', 'Information'),
