@@ -2,6 +2,7 @@ from braces.views import UserFormKwargsMixin
 from datetime import date, timedelta
 from django.conf import settings
 from django.core.urlresolvers import reverse
+from django.db.models import Q
 from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
@@ -113,6 +114,9 @@ class HomeView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(HomeView, self).get_context_data(**kwargs)
         incident_list = Incident.objects.filter(updated__gt=date.today() - timedelta(days=7)).order_by('-updated')
+        incident_list = Incident.objects.filter(
+            (Q(status__order=0) & Q(updated__gt=date.today() - timedelta(days=3))) | Q(status__order__gte=1)
+        )
         context.update({
             'incident_list': incident_list
         })

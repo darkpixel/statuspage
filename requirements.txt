@@ -1,6 +1,7 @@
 Django
 whitenoise
 dj-database-url
+django-ordered-model
 django-avatar
 django-bootstrap3
 django-celery

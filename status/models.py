@@ -2,6 +2,7 @@ from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.utils import timezone
+from ordered_model.models import OrderedModel
 
 
 STATUS_CHOICES = (
@@ -28,7 +29,7 @@ class BaseModel(models.Model):
         abstract = True
 
 
-class Status(BaseModel):
+class Status(OrderedModel, BaseModel):
     """ Status of an incident or event """
     name = models.CharField(max_length=50)
     type = models.CharField(max_length=20, choices=STATUS_CHOICES, default='Information')
@@ -37,7 +38,7 @@ class Status(BaseModel):
     def __unicode__(self):
         return self.name
 
-    class Meta:
+    class Meta(OrderedModel.Meta):
         verbose_name = 'Status'
         verbose_name_plural = 'Statuses'
 
@@ -46,6 +47,7 @@ class Incident(BaseModel):
     """ Creates an incident.  Incidents are displayed at the top of the page until closed. """
     user = models.ForeignKey(settings.AUTH_USER_MODEL)
     name = models.CharField(max_length=255)
+    status = models.ForeignKey(Status)
 
     def __unicode__(self):
         return "%s - %s" % (self.user, self.name)
@@ -96,5 +98,6 @@ class IncidentUpdate(BaseModel):
     def save(self, *args, **kwargs):
         """ Update the parent incident update time too. """
         self.incident.updated = timezone.now()
+        self.incident.status = self.status
         self.incident.save()
         super(IncidentUpdate, self).save(*args, **kwargs)

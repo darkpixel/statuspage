@@ -1,5 +1,6 @@
 from django.contrib import admin
 from status.models import Status, Incident, IncidentUpdate
+from ordered_model.admin import OrderedModelAdmin
 
 
 class BaseAdmin(admin.ModelAdmin):
@@ -13,13 +14,17 @@ class BaseAdmin(admin.ModelAdmin):
 
 
 @admin.register(Status)
-class StatusAdmin(BaseAdmin):
-    list_display = ['pk', 'name', 'type', 'icon']
+class StatusAdmin(OrderedModelAdmin):
+    list_display = ['pk', 'name', 'type', 'icon', 'move_up_down_links']
+    actions_on_top = True
+    actions_on_bottom = True
+    save_as = True
+    save_on_top = True
 
 
 @admin.register(Incident)
 class IncidentAdmin(BaseAdmin):
-    list_display = ['pk', 'created', 'updated', 'user', 'name']
+    list_display = ['pk', 'created', 'updated', 'user', 'name', 'status']
     list_filter = ['user']
 
 

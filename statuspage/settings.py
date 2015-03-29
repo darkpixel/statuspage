@@ -132,6 +132,7 @@ INSTALLED_APPS = (
     'debug_toolbar',
     'django_extensions',
     'bootstrap3',
+    'ordered_model',
     'tastypie',
     'avatar',
     'gunicorn',
