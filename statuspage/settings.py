@@ -12,6 +12,8 @@ STATUS_TICKET_URL = os.environ.get('STATUS_TICKET_URL', None)
 STATUS_LOGO_URL = os.environ.get('STATUS_LOGO_URL', None)
 STATUS_TITLE = os.environ.get('STATUS_TITLE', None)
 STATUS_ANALYTICS = os.environ.get('STATUS_ANALYTICS', None)
+SLACK_CHANNEL = os.environ.get('SLACK_CHANNEL', '#engineering')
+SLACK_TOKEN = os.environ.get('SLACK_TOKEN', None)
 
 TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 
@@ -141,6 +143,19 @@ INSTALLED_APPS = (
     'stronghold',
     'status',
 )
+
+try:
+    MIDDLEWARE_CLASSES += (
+#        'raven.contrib.django.raven_compat.middleware.Sentry404CatchMiddleware',
+        'raven.contrib.django.raven_compat.middleware.SentryResponseErrorIdMiddleware',
+    )
+
+    INSTALLED_APPS += ('raven.contrib.django.raven_compat',)
+
+    SENTRY_DSN = 'https://406fe8e0bded49f9a5bb6a97ff6e39bb:dc656560e9db47189e1161bc282595e5@errsrv.apphost.mxprime.net/18?verify_ssl=0&timeout=10'
+except Exception as e:
+    logger.warn('Unable to load Raven: %s' % (e))
+
 
 if os.environ.get('REDIS_URL', None):
     CACHES = {
