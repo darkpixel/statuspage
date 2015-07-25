@@ -1,18 +1,32 @@
-from braces.views import UserFormKwargsMixin
 from datetime import date, timedelta
 from django.conf import settings
+from django.contrib.sites.shortcuts import get_current_site
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.utils.decorators import method_decorator
 from django.views.generic import (
-    MonthArchiveView, YearArchiveView, CreateView, DeleteView, DetailView, ListView, TemplateView,
-    UpdateView
+    MonthArchiveView, YearArchiveView, CreateView, DeleteView, DetailView, ListView, TemplateView
 )
 from stronghold.decorators import public
 from status.models import Incident, IncidentUpdate
 from status.forms import IncidentCreateForm, IncidentUpdateCreateForm
+
+import slack
+import slack.chat
+import logging
+logger = logging.getLogger(__name__)
+
+
+def send_to_slack(message, channel='engineering', username='bot', emoji=':uit:', override_debug=False):
+    slack.api_token = settings.SLACK_TOKEN
+    if settings.DEBUG and not override_debug:
+        logger.info('Diverting from %s to dev while in debug mode as %s: %s' % (channel, username, message))
+        slack.chat.post_message('dev', 'DEBUG: ' + message, username=username, icon_emoji=emoji)
+    else:
+        logger.info('Sending to channel %s as %s: %s' % (channel, username, message))
+        slack.chat.post_message(channel, message, username=username, icon_emoji=emoji)
 
 
 def create_incident(request):
@@ -22,12 +36,31 @@ def create_incident(request):
         if form.is_valid() and form2.is_valid():
             i = form.save(commit=False)
             i.user = request.user
+            print i
             i.save()
 
             f = form2.save(commit=False)
             f.incident = i
             f.user = request.user
             f.save()
+
+            if settings.SLACK_CHANNEL and settings.SLACK_TOKEN:
+                if len(f.description) > 50:
+                    description = f.description[:50] + '...'
+                else:
+                    description = f.description
+                try:
+                    message = "<https://%s%s|%s> (%s): %s" % (
+                        get_current_site(request),
+                        reverse('status:incident_detail', args=[i.pk, ]),
+                        i.name,
+                        f.status.name,
+                        description
+                    )
+                    send_to_slack(message, username='STATUSBOT', channel=settings.SLACK_CHANNEL)
+                except Exception as e:
+                    logger.warn('Unable to send to slack: %s' % (e))
+
             return HttpResponseRedirect('/')
     else:
         form = IncidentCreateForm()
