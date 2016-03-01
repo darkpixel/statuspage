@@ -76,6 +76,20 @@ class DashboardView(ListView):
     model = Incident
 
 
+class IncidentHideView(DeleteView):
+    model = Incident
+    template_name = 'status/incident_hide.html'
+
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        self.object.hidden = True
+        self.object.save()
+        return HttpResponseRedirect(self.get_success_url())
+
+    def get_success_url(self):
+        return reverse('status:dashboard')
+
+
 class IncidentDeleteView(DeleteView):
     model = Incident
 
@@ -92,10 +106,15 @@ class IncidentUpdateUpdateView(CreateView):
         return reverse('status:incident_detail', args=[self.kwargs['pk']])
 
     def form_valid(self, form):
-        i = form.save(commit=False)
-        i.incident = Incident.objects.get(pk=self.kwargs['pk'])
-        i.user = self.request.user
+        iu = form.save(commit=False)
+        i = Incident.objects.get(pk=self.kwargs['pk'])
+        i.hidden = False
         i.save()
+        iu.incident = i
+        iu.incident.hidden = False
+        iu.incident.save()
+        iu.user = self.request.user
+        iu.save()
         return HttpResponseRedirect(self.get_success_url())
 
 
@@ -145,7 +164,7 @@ class HomeView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(HomeView, self).get_context_data(**kwargs)
-        incident_list = Incident.objects.filter(updated__gt=date.today() - timedelta(days=7)).order_by('-updated')
+        incident_list = Incident.objects.filter(hidden=False).order_by('-updated')
         context.update({
             'incident_list': incident_list
         })

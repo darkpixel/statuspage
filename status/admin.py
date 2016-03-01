@@ -17,10 +17,15 @@ class StatusAdmin(BaseAdmin):
     list_display = ['pk', 'name', 'type', 'icon']
 
 
+class IncidentUpdateInline(admin.TabularInline):
+    model = IncidentUpdate
+
+
 @admin.register(Incident)
 class IncidentAdmin(BaseAdmin):
-    list_display = ['pk', 'created', 'updated', 'user', 'name']
-    list_filter = ['user']
+    list_display = ['pk', 'created', 'updated', 'user', 'name', 'hidden']
+    list_filter = ['user', 'hidden']
+    inlines = [IncidentUpdateInline, ]
 
 
 @admin.register(IncidentUpdate)

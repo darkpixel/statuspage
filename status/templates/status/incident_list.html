@@ -10,9 +10,9 @@
                 <td>User</td>
                 <td>Name</td>
                 <td>Status</td>
+                <td>Hidden?</td>
                 <td>Description</td>
-                <td></td>
-                <td></td>
+                <td>Actions</td>
             </tr>
         </thead>
         <tbody>
@@ -24,9 +24,12 @@
                     <td>{{ incident.user.username }}</td>
                     <td>{{ incident.name }}</td>
                     <td>{{ incident.get_latest_update.status.name }}</td>
+                    <td>{{ incident.hidden|yesno }}</td>
                     <td>{{ incident.get_latest_update.description|truncatewords:25 }}</td>
-                    <td><A class="btn btn-primary btn-xs" HREF="{% url 'status:incident_update' incident.pk %}">Update</A></td>
-                    <td><A class="btn btn-danger btn-xs" HREF="{% url 'status:incident_delete' incident.pk %}">Delete</A></td>
+                    <td>
+                        <A class="btn btn-primary btn-xs" HREF="{% url 'status:incident_update' incident.pk %}">Update</A>
+                        {% if not incident.hidden %}<A class="btn btn-primary btn-xs" HREF="{% url 'status:incident_hide' incident.pk %}">Hide</A>{% endif %}
+                        <A class="btn btn-danger btn-xs" HREF="{% url 'status:incident_delete' incident.pk %}">Delete</A>
                 </tr>
             {% endfor %}
         </tbody>

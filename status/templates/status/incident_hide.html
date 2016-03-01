@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load avatar_tags %}
+{% load bootstrap3 %}
+
+{% block content %}
+    <div class="alert alert-warning" role="alert">Are you sure you wish to hide the following incident? It will no longer be shown on the home page, but will be accessible to users.</div>
+
+    <ul class="list-group components">
+        <li class="list-group-item component">
+            <h4><i class="glyphicon fa {{ incident.status.icon }}"></i> {{ incident.name }} <small class="text-{{ incident.status.type }}">{{ incident.status.name }}</small></h4>
+            <p><div class="pull-left" style="padding-right: 10px;">{% avatar request.user 36 %}</div>{{ incident.description }}</p>
+            <p>Updated {{ incident.updated|timesince }} ago</p>
+        </li>
+    </ul>
+    <form action="." method="POST">
+        {% csrf_token %}
+        {% buttons %}
+            <button type="submit" class="btn btn-danger">
+                {% bootstrap_icon "eye-close" %} Hide
+            </button>
+        {% endbuttons %}
+    </form>
+{% endblock %}

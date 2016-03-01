@@ -5,7 +5,7 @@ from status.api import IncidentResource, StatusResource
 from status.models import Incident
 from status.views import (
     DashboardView, HomeView, IncidentArchiveMonthView, IncidentArchiveYearView, IncidentDeleteView,
-    IncidentDetailView, IncidentUpdateUpdateView, create_incident
+    IncidentDetailView, IncidentUpdateUpdateView, create_incident, IncidentHideView
 )
 
 
@@ -22,6 +22,7 @@ urlpatterns = patterns(
     url(r'^incident/new/$', create_incident, name='incident_create'),
     url(r'^incident/(?P<pk>\d+)/$', IncidentDetailView.as_view(model=Incident), name='incident_detail'),
     url(r'^incident/(?P<pk>\d+)/update/$', IncidentUpdateUpdateView.as_view(), name='incident_update'),
+    url(r'^incident/(?P<pk>\d+)/hide/$', IncidentHideView.as_view(), name='incident_hide'),
     url(r'^incident/(?P<pk>\d+)/delete/$', IncidentDeleteView.as_view(), name='incident_delete'),
     url(r'^archive/(?P<year>\d{4})/$', IncidentArchiveYearView.as_view(), name="archive_year"),
     url(
