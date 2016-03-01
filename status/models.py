@@ -46,6 +46,7 @@ class Incident(BaseModel):
     """ Creates an incident.  Incidents are displayed at the top of the page until closed. """
     user = models.ForeignKey(settings.AUTH_USER_MODEL)
     name = models.CharField(max_length=255)
+    hidden = models.BooleanField(default=False)
 
     def __unicode__(self):
         return "%s - %s" % (self.user, self.name)
