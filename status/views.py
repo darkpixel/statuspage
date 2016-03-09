@@ -75,6 +75,13 @@ def create_incident(request):
 class DashboardView(ListView):
     model = Incident
 
+    def get_queryset(self):
+        return Incident.objects.exclude(hidden=True)
+
+
+class HiddenDashboardView(ListView):
+    model = Incident
+
 
 class IncidentHideView(DeleteView):
     model = Incident
