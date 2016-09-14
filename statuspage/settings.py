@@ -14,6 +14,7 @@ STATUS_TITLE = os.environ.get('STATUS_TITLE', None)
 STATUS_ANALYTICS = os.environ.get('STATUS_ANALYTICS', None)
 SLACK_CHANNEL = os.environ.get('SLACK_CHANNEL', '#engineering')
 SLACK_TOKEN = os.environ.get('SLACK_TOKEN', None)
+SLACK_USERNAME = os.environ.get('SLACK_USERNAME', 'STATUSBOT')
 
 TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 

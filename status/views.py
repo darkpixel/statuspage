@@ -19,7 +19,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-def send_to_slack(message, channel='engineering', username='bot', emoji=':uit:', override_debug=False):
+def send_to_slack(message, channel='engineering', username='statusbot', emoji=':uit:', override_debug=False):
     slack.api_token = settings.SLACK_TOKEN
     if settings.DEBUG and not override_debug:
         logger.info('Diverting from %s to dev while in debug mode as %s: %s' % (channel, username, message))
@@ -57,7 +57,7 @@ def create_incident(request):
                         f.status.name,
                         description
                     )
-                    send_to_slack(message, username='STATUSBOT', channel=settings.SLACK_CHANNEL)
+                    send_to_slack(message, username=settings.SLACK_USERNAME, channel=settings.SLACK_CHANNEL)
                 except Exception as e:
                     logger.warn('Unable to send to slack: %s' % (e))
 
