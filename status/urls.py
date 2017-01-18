@@ -1,4 +1,4 @@
-from django.conf.urls import patterns, url, include
+from django.conf.urls import url, include
 from django.views.decorators.cache import cache_page
 from tastypie.api import NamespacedApi
 from status.api import IncidentResource, StatusResource
@@ -14,8 +14,7 @@ v1_api.register(StatusResource())
 v1_api.register(IncidentResource())
 
 
-urlpatterns = patterns(
-    '',
+urlpatterns = [
     url(r'^api/', include(v1_api.urls)),
     url(r'^$', cache_page(15)(HomeView.as_view()), name='home'),
     url(r'^dashboard/$', DashboardView.as_view(), name='dashboard'),
@@ -31,4 +30,4 @@ urlpatterns = patterns(
         IncidentArchiveMonthView.as_view(month_format='%m'),
         name="archive_month_numeric"
     ),
-)
+]

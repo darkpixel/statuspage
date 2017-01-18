@@ -77,25 +77,25 @@ STATICFILES_FINDERS = (
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = '3a+pfqp937h9we7hwsoiy4jq3hq46jwusrs7c7xedi6ka4oizeu5drj+j'
 
-TEMPLATE_LOADERS = (
-    'django.template.loaders.filesystem.Loader',
-    'django.template.loaders.app_directories.Loader',
-    'django.template.loaders.eggs.Loader',
-)
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.contrib.auth.context_processors.auth',
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+                'status.context_processors.analytics',
+            ],
+        },
+    },
+]
 
-TEMPLATE_CONTEXT_PROCESSORS = (
-    'django.contrib.auth.context_processors.auth',
-    'django.core.context_processors.debug',
-    'django.core.context_processors.i18n',
-    'django.core.context_processors.media',
-    'django.core.context_processors.static',
-    'django.contrib.messages.context_processors.messages',
-    'django.core.context_processors.request',
-    'status.context_processors.analytics',
-)
-
-MIDDLEWARE_CLASSES = (
-    'stronghold.middleware.LoginRequiredMiddleware',
+MIDDLEWARE = [
+    'status.middleware.LoginRequiredShimMiddleware',
     'django.middleware.gzip.GZipMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -104,7 +104,8 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-)
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+]
 
 STRONGHOLD_DEFAULTS = True
 
@@ -128,6 +129,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.messages',
+    'whitenoise.runserver_nostatic',
     'django.contrib.staticfiles',
     'django.contrib.admin',
     'django.contrib.admindocs',
@@ -138,9 +140,6 @@ INSTALLED_APPS = (
     'tastypie',
     'avatar',
     'gunicorn',
-    'djcelery',
-    'djcelery_email',
-    'kombu.transport.django',
     'stronghold',
     'status',
 )
@@ -170,49 +169,17 @@ if os.environ.get('REDIS_URL', None):
     }
 
 BROKER_URL = os.environ.get("REDIS_URL", None)
-CELERY_ACCEPT_CONTENT = ['json', 'pickle']
-CELERY_TIMEZONE = 'America/Los_Angeles'
-CELERY_CREATE_MISSING_QUEUES = True
-CELERY_RESULT_BACKEND = os.environ.get("REDIS_URL", None)
-CELERY_RESULT_SERIALIZER = 'json'
-CELERYD_CONCURRENCY = 16
-CELERY_TRACK_STARTED = True
-CELERY_SEND_EVENTS = True
-CELERY_SEND_TASK_SENT_EVENT = True
-CELERYD_POOL_RESTARTS = True
 
 APPEND_SLASH = True
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
-#EMAIL_BACKEND = 'djcelery_email.backends.CeleryEmailBackend'
 EMAIL_HOST = os.environ.get('MAIL_SERVER', None)
 EMAIL_PORT = os.environ.get('MAIL_PORT', 25)
 EMAIL_HOST_USER = os.environ.get('MAIL_USER', None)
 EMAIL_HOST_PASSWORD = os.environ.get('MAIL_PASSWORD', None)
 EMAIL_USE_TLS = os.environ.get('MAIL_TLS', False)
 DEFAULT_FROM_EMAIL = os.environ.get('MAIL_FROM', 'statuspage@unconfigured.org')
-
-if not PRODUCTION:
-    DEBUG_TOOLBAR_PANELS = [
-        'debug_toolbar.panels.versions.VersionsPanel',
-        'debug_toolbar.panels.timer.TimerPanel',
-        'debug_toolbar.panels.settings.SettingsPanel',
-        'debug_toolbar.panels.headers.HeadersPanel',
-        'debug_toolbar.panels.request.RequestPanel',
-        'debug_toolbar.panels.sql.SQLPanel',
-        'debug_toolbar.panels.staticfiles.StaticFilesPanel',
-        'debug_toolbar.panels.templates.TemplatesPanel',
-        'debug_toolbar.panels.cache.CachePanel',
-        'debug_toolbar.panels.signals.SignalsPanel',
-        'debug_toolbar.panels.logging.LoggingPanel',
-        'debug_toolbar.panels.redirects.RedirectsPanel',
-    ]
-    DEBUG_TOOLBAR_CONFIG = {
-        'INTERCEPT_REDIRECTS': False,
-        'SHOW_TEMPLATE_CONTEXT': True,
-    }
-    DEBUG_TOOLBAR_PATCH_SETTINGS = False
 
 DISABLE_EXISTING_LOGGERS = False
 LOGGING_CONFIG = None
