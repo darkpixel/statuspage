@@ -3,7 +3,7 @@ from django.conf import settings
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
-from django.shortcuts import render_to_response
+from django.shortcuts import render
 from django.template import RequestContext
 from django.utils.decorators import method_decorator
 from django.views.generic import (
@@ -66,10 +66,10 @@ def create_incident(request):
         form = IncidentCreateForm()
         form2 = IncidentUpdateCreateForm()
 
-    return render_to_response('status/incident_create_form.html', {
-        'form': form,
-        'form2': form2,
-    }, context_instance=RequestContext(request))
+    request_context = RequestContext(request)
+    request_context.push({'form': form, 'form2': form2})
+
+    return render(request, template_name='status/incident_create_form.html', context=request_context)
 
 
 class DashboardView(ListView):
