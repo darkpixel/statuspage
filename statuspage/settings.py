@@ -151,7 +151,9 @@ try:
 
     INSTALLED_APPS += ('raven.contrib.django.raven_compat',)
 
-    SENTRY_DSN = os.environ.get('SENTRY_URL', None)
+    RAVEN_CONFIG = {
+        'dsn': os.environ.get('SENTRY_URL', None)
+    }
 except Exception as e:
     logger.warn('Unable to load Raven: %s' % (e))
 
