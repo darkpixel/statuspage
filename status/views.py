@@ -2,9 +2,10 @@ from datetime import date, timedelta
 from django.conf import settings
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.urlresolvers import reverse
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
-from django.template import RequestContext
+from django.template import RequestContext, Template
+from django.template.loader import get_template
 from django.utils.decorators import method_decorator
 from django.views.generic import (
     MonthArchiveView, YearArchiveView, CreateView, DeleteView, DetailView, ListView, TemplateView
@@ -68,8 +69,12 @@ def create_incident(request):
 
     request_context = RequestContext(request)
     request_context.push({'form': form, 'form2': form2})
+    t = get_template('status/incident_create_form.html')
+    rendered_template = t.render(request_context.flatten(), request)
+    return HttpResponse(rendered_template)
+    #return get_template('status/incident_create_form.html').render(request_context.flatten(), request)
 
-    return render(request, template_name='status/incident_create_form.html', context=request_context)
+    #return render(request, template_name='status/incident_create_form.html', context=request_context)
 
 
 class DashboardView(ListView):
