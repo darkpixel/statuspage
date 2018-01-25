@@ -19,11 +19,10 @@ Docker
 ------
 * docker pull darkpixel/statuspage
 * docker run -itp 8000:8000 darkpixel/statuspage
-* Visit http://localhost
+* Visit http://localhost:8000/
 
-
-Quick Setup
-===========
+Quick Deployment
+================
 
 Heroku / Dokku
 --------------
@@ -37,6 +36,7 @@ Heroku / Dokku
 * Optionally set the LOGO_URL to the logo you would like displayed on the status page
 * Optionally Set the TICKET_URL to the URL of your ticket system
 * Make sure you run: python manage.py migrate
+* Optionally run: python manage.py loaddata initial_data
 
 
 uWSGI
