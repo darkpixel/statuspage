@@ -12,6 +12,16 @@ Please file an issue if you have trouble or want to suggest an improvement!  We 
 https://github.com/darkpixel/statuspage/issues
 
 
+Demo
+====
+
+Docker
+------
+* docker pull darkpixel/statuspage
+* docker run -itp 8000:8000 darkpixel/statuspage
+* Visit http://localhost
+
+
 Quick Setup
 ===========
 
@@ -62,4 +72,4 @@ Locally using virtualenvwrapper
 * pip install -r requirements.txt
 * python manage.py migrate
 * python manage.py runserver
-    
+
