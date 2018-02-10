@@ -17,8 +17,8 @@ Demo
 
 Docker
 ------
-* docker pull darkpixel/statuspage
-* docker run -itp 8000:8000 darkpixel/statuspage
+* docker pull darkpixel/statuspage:dev
+* docker run -itp 8000:8000 darkpixel/statuspage:dev
 * Visit http://localhost:8000/
 
 Quick Deployment
