@@ -1,3 +1,5 @@
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fdarkpixel%2Fstatuspage.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fdarkpixel%2Fstatuspage?ref=badge_shield)
+
 statuspage
 ==========
 
@@ -63,3 +65,7 @@ Locally using virtualenvwrapper
 * python manage.py migrate
 * python manage.py runserver
     
+
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fdarkpixel%2Fstatuspage.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fdarkpixel%2Fstatuspage?ref=badge_large)
