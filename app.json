@@ -1,0 +1,6 @@
+{
+  "name": "statuspage",
+  "description": "A simple self-hosted open source status page site written in Django",
+  "repository": "https://github.com/darkpixel/statuspage",
+  "keywords": ["python", "django", "status", "statuspage", "open source", "productivity"]
+}
