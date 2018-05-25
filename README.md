@@ -24,7 +24,7 @@ Docker
 Quick Deployment
 ================
 
-Heroku / Dokku
+Heroku / Dokku [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/darkpixel/statuspage)
 --------------
 * Check out the code from github
 * Push it to Dokku or Heroku
