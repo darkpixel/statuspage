@@ -94,7 +94,6 @@ TEMPLATES = [
 ]
 
 MIDDLEWARE = [
-    'status.middleware.LoginRequiredShimMiddleware',
     'django.middleware.gzip.GZipMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -105,8 +104,6 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
-
-STRONGHOLD_DEFAULTS = True
 
 ROOT_URLCONF = 'statuspage.urls'
 
@@ -139,7 +136,6 @@ INSTALLED_APPS = (
     'tastypie',
     'avatar',
     'gunicorn',
-    'stronghold',
     'status',
 )
 
