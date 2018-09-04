@@ -9,7 +9,7 @@ ENV UWSGI_WSGI_FILE=statuspage/wsgi.py UWSGI_MASTER=1 UWSGI_WORKERS=2 UWSGI_THRE
 ENV PYTHONUNBUFFERED 1
 
 RUN apk update && apk add \
-gcc make libc-dev musl-dev linux-headers pcre-dev build-base gettext vim openssl-dev libffi-dev postgresql-client \
+gcc make libc-dev musl-dev linux-headers pcre-dev build-base gettext vim libffi-dev postgresql-client \
 postgresql-dev jpeg-dev zlib-dev python python-dev py-openssl
 
 RUN pip install -r /requirements.txt && pip install uwsgi
