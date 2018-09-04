@@ -15,7 +15,7 @@ django-extensions==2.0.7
 django-extra-views==0.11.0
 gunicorn==19.8.1
 honcho==1.0.1
-psycopg2==2.7.4
+psycopg2-binary==2.7.5
 pytz==2018.4
 redis==2.10.6
 django-redis==4.9.0
