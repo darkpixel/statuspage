@@ -40,7 +40,7 @@ ADMINS = (
 MANAGERS = ADMINS
 
 DATABASES = {
-    'default': dj_database_url.config(default="sqlite:///statuspage.db"),
+    'default': dj_database_url.config(default=os.environ.get('DATABASE_URL', "sqlite:///statuspage.db"))
 }
 
 TIME_ZONE = 'America/Los_Angeles'
