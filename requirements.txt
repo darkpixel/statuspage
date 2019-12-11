@@ -14,7 +14,7 @@ django-debug-toolbar==1.6
 django-extensions==1.7.5
 django-extra-views==0.6.5
 django-stronghold==0.2.7
-gunicorn==19.3.0
+gunicorn==19.5.0
 honcho==0.6.6
 psycopg2==2.6
 pytz==2015.2
