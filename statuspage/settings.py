@@ -107,6 +107,9 @@ MIDDLEWARE = [
 ]
 
 STRONGHOLD_DEFAULTS = True
+STRONGHOLD_PUBLIC_URLS = (
+    r'^/api/',
+)
 
 ROOT_URLCONF = 'statuspage.urls'
 
