@@ -11,7 +11,7 @@ admin.autodiscover()
 urlpatterns = [
     url(r'^', include('status.urls', namespace='status', app_name='status')),
     url(r'^account/login/$', login, {'template_name': 'admin/login.html'}, 'login'),
-    url(r'^account/logout/$', logout, 'logout'),
+    url(r'^account/logout/$', logout, {'template_name': 'admin/logout.html'}, 'logout'),
     url(r'^avatar/', include('avatar.urls')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),

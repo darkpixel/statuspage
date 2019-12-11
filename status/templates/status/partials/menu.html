@@ -6,6 +6,6 @@
         <A HREF="{% url 'status:dashboard' %}" class="btn btn-primary"><i class="fa fa-list"></i> Incidents</A>
         <A HREF="{% url 'status:dashboard_hidden' %}" class="btn btn-primary"><i class="fa fa-eye"></i> Hidden Incidents</A>
         <A HREF="{% url 'admin:auth_user_changelist' %}" class="btn btn-primary"><i class="fa fa-users"></i> Users</A>
-        <A HREF="{% url 'admin:logout' %}?next=/" class="btn btn-primary"><i class="fa fa-sign-out"></i> Sign Out</A>
+        <A HREF="{% url 'logout' %}?next=/" class="btn btn-primary"><i class="fa fa-sign-out"></i> Sign Out</A>
     </div>
 {% endif %}
