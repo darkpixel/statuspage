@@ -12,7 +12,7 @@ RUN apk update; apk add python3-dev postgresql-dev libpq gcc libjpeg jpeg-dev zl
 RUN pip install -r /app/requirements.txt
 
 # Call collectstatic (customize the following line with the minimal environment variables needed for manage.py to run):
-RUN DATABASE_URL='' python manage.py collectstatic --noinput
+#RUN DATABASE_URL='' python manage.py collectstatic --noinput
 
 EXPOSE 5000
 
