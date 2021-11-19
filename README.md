@@ -1,6 +1,8 @@
 statuspage
 ==========
 
+NOTE: We are just now starting to dust off this project and bring it into the 21st century.  Pardon our dust.
+
 A simple self-hosted open source status page site written in Django
 
 Inspired by [Cachet](https://github.com/cachethq/Cachet)
