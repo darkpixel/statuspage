@@ -1,0 +1,17 @@
+name: Docker Image CI
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag statuspage:$(date +%s)
+    - uses: jerray/publish-docker-action@master
+      with:
+        username: darkpixel
+        password: ${{ secrets.MY_TOKEN }}
+        registry: docker.pkg.github.com
+        repository: darkpixel/statuspage/statuspage
+        auto_tag: true
