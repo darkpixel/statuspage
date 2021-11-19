@@ -40,7 +40,7 @@ ADMINS = (
 MANAGERS = ADMINS
 
 DATABASES = {
-    'default': dj_database_url.config(default="sqlite:///statuspage.db"),
+    'default': dj_database_url.config(default=os.environ.get('DATABASE_URL', "sqlite:///statuspage.db"))
 }
 
 TIME_ZONE = 'America/Los_Angeles'
@@ -105,6 +105,12 @@ MIDDLEWARE = [
     'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
+STRONGHOLD_DEFAULTS = True
+STRONGHOLD_PUBLIC_URLS = (
+    r'^/api/',
+)
+
+>>>>>>> master
 ROOT_URLCONF = 'statuspage.urls'
 
 # Python dotted path to the WSGI application used by Django's runserver.
