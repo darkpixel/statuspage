@@ -14,6 +14,7 @@ v1_api = NamespacedApi(api_name='v1', urlconf_namespace='status')
 v1_api.register(StatusResource())
 v1_api.register(IncidentResource())
 
+app_name = 'status'
 
 urlpatterns = [
     url(r'^api/', include(v1_api.urls)),

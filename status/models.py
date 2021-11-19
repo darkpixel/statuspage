@@ -1,5 +1,5 @@
 from django.conf import settings
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.db import models
 from django.utils import timezone
 
@@ -44,7 +44,7 @@ class Status(BaseModel):
 
 class Incident(BaseModel):
     """ Creates an incident.  Incidents are displayed at the top of the page until closed. """
-    user = models.ForeignKey(settings.AUTH_USER_MODEL)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
     hidden = models.BooleanField(default=False)
 
@@ -77,9 +77,9 @@ class Incident(BaseModel):
 
 class IncidentUpdate(BaseModel):
     """ Updates about an incident. """
-    incident = models.ForeignKey(Incident)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL)
-    status = models.ForeignKey(Status)
+    incident = models.ForeignKey(Incident, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    status = models.ForeignKey(Status, on_delete=models.CASCADE)
     description = models.TextField()
 
     def __unicode__(self):

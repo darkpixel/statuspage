@@ -11,10 +11,6 @@ PRODUCTION = os.environ.get('PRODUCTION', False)
 STATUS_TICKET_URL = os.environ.get('STATUS_TICKET_URL', None)
 STATUS_LOGO_URL = os.environ.get('STATUS_LOGO_URL', None)
 STATUS_TITLE = os.environ.get('STATUS_TITLE', None)
-STATUS_ANALYTICS = os.environ.get('STATUS_ANALYTICS', None)
-SLACK_CHANNEL = os.environ.get('SLACK_CHANNEL', '#engineering')
-SLACK_TOKEN = os.environ.get('SLACK_TOKEN', None)
-SLACK_USERNAME = os.environ.get('SLACK_USERNAME', 'STATUSBOT')
 
 TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 
@@ -63,8 +59,6 @@ MEDIA_URL = '/media/'
 STATIC_URL = '/static/'
 
 PROJECT_PATH = os.path.dirname(os.path.abspath(__file__))
-
-BOWER_COMPONENTS_ROOT = os.path.join(PROJECT_PATH, '../')
 
 STATICFILES_DIRS = (
 )
@@ -143,34 +137,6 @@ INSTALLED_APPS = (
     'gunicorn',
     'status',
 )
-
-try:
-    MIDDLEWARE_CLASSES += (
-#        'raven.contrib.django.raven_compat.middleware.Sentry404CatchMiddleware',
-        'raven.contrib.django.raven_compat.middleware.SentryResponseErrorIdMiddleware',
-    )
-
-    INSTALLED_APPS += ('raven.contrib.django.raven_compat',)
-
-    RAVEN_CONFIG = {
-        'dsn': os.environ.get('SENTRY_URL', None)
-    }
-except Exception as e:
-    logger.warn('Unable to load Raven: %s' % (e))
-
-
-if os.environ.get('REDIS_URL', None):
-    CACHES = {
-        "default": {
-            "BACKEND": "django_redis.cache.RedisCache",
-            "LOCATION": "%s/1" % (os.environ.get('REDIS_URL', None)),
-            "OPTIONS": {
-                "CLIENT_CLASS": "django_redis.client.DefaultClient",
-            }
-        }
-    }
-
-BROKER_URL = os.environ.get("REDIS_URL", None)
 
 APPEND_SLASH = True
 
