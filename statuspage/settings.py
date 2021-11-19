@@ -110,7 +110,6 @@ STRONGHOLD_PUBLIC_URLS = (
     r'^/api/',
 )
 
->>>>>>> master
 ROOT_URLCONF = 'statuspage.urls'
 
 # Python dotted path to the WSGI application used by Django's runserver.
