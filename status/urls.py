@@ -1,35 +1,28 @@
 from django.contrib.auth.decorators import login_required
-from django.conf.urls import url, include
+from django.urls import include, path, re_path, register_converter
 from django.views.decorators.cache import cache_page
-from tastypie.api import NamespacedApi
-from status.api import IncidentResource, StatusResource
 from status.models import Incident
+from stronghold.decorators import public
 from status.views import (
     DashboardView, HomeView, IncidentArchiveMonthView, IncidentArchiveYearView, IncidentDeleteView,
     IncidentDetailView, IncidentUpdateUpdateView, create_incident, IncidentHideView, HiddenDashboardView
 )
 
 
-v1_api = NamespacedApi(api_name='v1', urlconf_namespace='status')
-v1_api.register(StatusResource())
-v1_api.register(IncidentResource())
-
 app_name = 'status'
 
 urlpatterns = [
-    url(r'^api/', include(v1_api.urls)),
-    url(r'^$', cache_page(15)(HomeView.as_view()), name='home'),
-    url(r'^dashboard/$', login_required(DashboardView.as_view()), name='dashboard'),
-    url(r'^dashboard/hidden/$', login_required(HiddenDashboardView.as_view()), name='dashboard_hidden'),
-    url(r'^incident/new/$', login_required(create_incident), name='incident_create'),
-    url(r'^incident/(?P<pk>\d+)/$', login_required(IncidentDetailView.as_view(model=Incident)), name='incident_detail'),
-    url(r'^incident/(?P<pk>\d+)/update/$', login_required(IncidentUpdateUpdateView.as_view()), name='incident_update'),
-    url(r'^incident/(?P<pk>\d+)/hide/$', login_required(IncidentHideView.as_view()), name='incident_hide'),
-    url(r'^incident/(?P<pk>\d+)/delete/$', login_required(IncidentDeleteView.as_view()), name='incident_delete'),
-    url(r'^archive/(?P<year>\d{4})/$', login_required(IncidentArchiveYearView.as_view()), name="archive_year"),
-    url(
-        r'^archive/(?P<year>\d{4})/(?P<month>\d+)/$',
-        login_required(IncidentArchiveMonthView.as_view(month_format='%m')),
-        name="archive_month_numeric"
-    ),
+    # Public Views
+    path('', public(cache_page(15)(HomeView.as_view())), name='home'),
+    path('incident/<int:pk>/', public(IncidentDetailView.as_view(model=Incident)), name='incident_detail'),
+    path('archive/(<int:year>{4}/', public(IncidentArchiveYearView.as_view()), name="archive_year"),
+    path('archive/(<int:year>{4})/<int:month>)/', public(IncidentArchiveMonthView.as_view(month_format='%m')), name="archive_month_numeric"),
+
+    # Authenticated Views
+    path('dashboard/', login_required(DashboardView.as_view()), name='dashboard'),
+    path('dashboard/hidden/', login_required(HiddenDashboardView.as_view()), name='dashboard_hidden'),
+    path('incident/new/', login_required(create_incident), name='incident_create'),
+    path('incident/<int:pk>/update/', login_required(IncidentUpdateUpdateView.as_view()), name='incident_update'),
+    path('incident/<int:pk>/hide/', login_required(IncidentHideView.as_view()), name='incident_hide'),
+    path('incident/<int:pk>/delete/', login_required(IncidentDeleteView.as_view()), name='incident_delete'),
 ]

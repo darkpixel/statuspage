@@ -41,13 +41,13 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='incident',
             name='status',
-            field=models.ForeignKey(to='status.Status'),
+            field=models.ForeignKey(to='status.Status', on_delete=models.CASCADE),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='incident',
             name='user',
-            field=models.ForeignKey(to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE),
             preserve_default=True,
         ),
     ]

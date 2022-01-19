@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% load django_bootstrap5 %}
+{% block content %}
+    <div class="col-md-6">
+            {% block formcontent %}
+                {% block formtitle %}{% endblock %}
+                <form method="post" action="{% if form_url %}{{ form_url }}{% else %}.{% endif %}">
+                    {% block formhead %}{% endblock %}
+                    {% csrf_token %}
+                    {% if form %}
+                      {% bootstrap_form form %}
+                    {% endif %}
+                    {% for formset in inlines %}
+                        {% if formset.forms %}
+                            <hr>
+                            {% block formsettitle %}{% endblock %}
+                        {% endif %}
+                        <div id="{{ formset.prefix }}">
+                            {% for subform in formset.forms %}
+                              {% bootstrap_form form %}
+                            {% endfor %}
+                            {{ formset.management_form }}
+                        </div>
+                    {% endfor %}<br>
+                    <button type="submit" class="btn btn-flat btn-primary {% block buttonclass %}btn-primary{% endblock %}">{% block buttonname %}Save{% endblock %}</button>
+                    {% if request.GET.next %}
+                        <input type="hidden" name="next" VALUE="{{ request.GET.next }}" />
+                    {% endif %}
+                    {% block extform %}{% endblock %}
+                </form>
+            {% endblock %}
+    </div>
+{% endblock %}
+

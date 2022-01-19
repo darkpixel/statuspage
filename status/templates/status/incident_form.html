@@ -1,20 +1,3 @@
-{% extends "base.html" %}
+{% extends "baseform.html" %}
 {% load avatar_tags %}
-{% load bootstrap3 %}
-
-{% block content %}
-    <form action="." method="POST">
-        {% csrf_token %}
-            {% bootstrap_form form %}
-            {% if inlines %}
-                {% for f in inlines %}
-                    {% bootstrap_formset f %}
-                {% endfor %}
-        {% endif %}
-        {% buttons %}
-            <button type="submit" class="btn btn-primary">
-                {% bootstrap_icon "star" %} Submit
-            </button>
-        {% endbuttons %}
-    </form>
-{% endblock %}
+{% load django_bootstrap5 %}

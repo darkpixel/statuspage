@@ -1,7 +1,7 @@
 statuspage
 ==========
 
-NOTE: We are just now starting to dust off this project and bring it into the 21st century.  Pardon our dust.
+## NOTE: We are just now (January 2022) starting to dust off this project and bring it into the 21st century.  Pardon our dust.
 
 A simple self-hosted open source status page site written in Django
 

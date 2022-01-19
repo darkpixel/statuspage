@@ -34,7 +34,7 @@ class Status(BaseModel):
     type = models.CharField(max_length=20, choices=STATUS_CHOICES, default='Information')
     icon = models.CharField(max_length=255, help_text='Font Awesome icon name', default='fa-warning')
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
     class Meta:

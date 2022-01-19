@@ -39,7 +39,7 @@ DATABASES = {
     'default': dj_database_url.config(default=os.environ.get('DATABASE_URL', "sqlite:///statuspage.db"))
 }
 
-TIME_ZONE = 'America/Los_Angeles'
+TIME_ZONE = 'GMT'
 LANGUAGE_CODE = 'en-us'
 
 SITE_ID = 1
@@ -48,9 +48,7 @@ USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
-LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = '/'
-LOGOUT_URL = 'logout'
 
 MEDIA_ROOT = 'media'
 STATIC_ROOT = 'static'
@@ -81,7 +79,6 @@ TEMPLATES = [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.messages.context_processors.messages',
-                'status.context_processors.analytics',
             ],
         },
     },
@@ -89,7 +86,6 @@ TEMPLATES = [
 
 MIDDLEWARE = [
     'django.middleware.gzip.GZipMiddleware',
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -129,11 +125,9 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.admindocs',
     'django.contrib.humanize',
-    'debug_toolbar',
     'django_extensions',
-    'bootstrap3',
-    'tastypie',
-    'avatar',
+    'django_bootstrap5',
+    'django_gravatar',
     'gunicorn',
     'status',
 )

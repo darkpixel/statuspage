@@ -1,6 +1,6 @@
-{% extends "base.html" %}
-{% load avatar_tags %}
-{% load bootstrap3 %}
+{% extends "baseform.html" %}
+{% load gravatar %}
+{% load django_bootstrap5 %}
 
 {% block content %}
     <h2>Current Status</h2>
@@ -11,22 +11,14 @@
         <div class="bs-callout bs-callout-{{ update.status.type }}">
                 <li class="list-group-item component">
                 <h3><i class="glyphicon fa {{ update.status.icon }}"></i> <small class="text-{{ update.status.type }}">{{ update.status.name }}</small></h3>
-                    <p><div class="pull-left" style="padding-right: 10px;">{% avatar update.user 36 %}</div><h4>{{ update.description|linebreaksbr|urlize }}</h4></p>
+                    <p><div class="pull-left" style="padding-right: 10px;">{% gravatar update.user 36 %}</div><h4>{{ update.description|linebreaksbr|urlize }}</h4></p>
                     <p>Posted {{ update.created|timesince }} ago by {{ update.user.username }}</p>
                 </li>
             </div>
         {% endfor %}
     </ul>
     {% if request.user.is_authenticated %}
-    <form action="{% url 'status:incident_update' incident.pk %}" method="POST">
-            {% csrf_token %}
-            {% bootstrap_form form %}
-            {% buttons %}
-                <button type="submit" class="btn btn-primary">
-                    {% bootstrap_icon "star" %} Submit
-                </button>
-            {% endbuttons %}
-        </form>
+    {{ block.super }}
     {% endif %}
 {% endblock %}
 

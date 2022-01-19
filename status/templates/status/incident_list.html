@@ -16,7 +16,7 @@
             </tr>
         </thead>
         <tbody>
-            {% for incident in incident_list %}
+            {% for incident in open_incidents %}
                 <tr>
                     <td><A HREF="{% url 'status:incident_detail' incident.pk %}">{{ incident.pk }}</A></td>
                     <td>{{ incident.created }} ({{ incident.created|timesince }} ago)</td>

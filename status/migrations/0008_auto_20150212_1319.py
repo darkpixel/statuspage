@@ -20,9 +20,9 @@ class Migration(migrations.Migration):
                 ('created', models.DateTimeField(null=True, editable=False, blank=True)),
                 ('updated', models.DateTimeField(null=True, editable=False, blank=True)),
                 ('description', models.TextField()),
-                ('incident', models.ForeignKey(to='status.Incident')),
-                ('status', models.ForeignKey(to='status.Status')),
-                ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL)),
+                ('incident', models.ForeignKey(to='status.Incident', on_delete=models.CASCADE)),
+                ('status', models.ForeignKey(to='status.Status', on_delete=models.CASCADE)),
+                ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)),
             ],
             options={
                 'ordering': ['-created'],

@@ -1,4 +1,4 @@
-{% load avatar_tags %}
+{% load gravatar %}
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -14,11 +14,8 @@
         <meta name="signet:links" content="http://github.com/darkpixel/statuspage">
         <script src="//oss.maxcdn.com/signet/0.4.4/signet.min.js"></script>
         <title>Status{% block title %}{% if STATUS_TITLE %} - {{ STATUS_TITLE }}{% endif %}{% endblock %}</title>
-        <link href="//maxcdn.bootstrapcdn.com/bootswatch/3.2.0/yeti/bootstrap.min.css" rel="stylesheet"/>
-        <link href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.2.1/css/material.min.css" rel="stylesheet"/>
-        <link href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.2.1/css/material-wfont.min.css" rel="stylesheet"/>
-        <link href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.2.1/css/ripples.min.css" rel="stylesheet"/>
-        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/4.6.1/yeti/bootstrap.min.css" integrity="sha512-I7XN7UohsJrNHs9YBd+o6qDsepajw8d4xJ1jgLhnyi27JkOTS+S9kzHgGxg4pUJ7ha6JAMNq3POY7tbvZ9sHQw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
         <style>
             .bs-callout {
                 padding: 20px;
@@ -84,35 +81,27 @@
             {% block menubar %}
                 {% include "status/partials/menu.html" %}
             {% endblock %}
+            {% if STATUS_LOGO_URL %}
+            <div>
+              <div class="pull-right"><img src="{{ STATUS_LOGO_URL }}" /></div>
+            </div>
+            {% endif %}
             {% block content %}
             {% endblock %}
         </div>
-        <div class="navbar navbar-fixed-bottom text-info" style="background-color: transparent;">
-            <footer>
-                <p class="text-center">
-                    <small>
-                        <A HREF="https://github.com/darkpixel/statuspage/">statuspage</A> by <A HREF="https://github.com/darkpixel/">Aaron C. de Bruyn</A> &lt;aaron@heyaaron.com&gt; and
-                        <A HREF="https://github.com/kylehuff">Kyle L. Huff</A> &lt;gitcode@curetheitch.com&gt; &lt;&gt;&lt;
-                        <A HREF="{% url 'status:dashboard' %}">admin</A>
-                    </small>
-                </p>
-            </footer>
+
+        <div id="footer" class="app-footer m-0 text-muted">
+          <p class="text-info text-center">>
+          <small>
+            <A HREF="https://github.com/darkpixel/statuspage/">statuspage</A> Copyright &copy; 2015-{% now "Y" %}
+            <A HREF="https://github.com/darkpixel/">Aaron C. de Bruyn</A> and
+            <A HREF="https://github.com/kylehuff">Kyle L. Huff</A> &lt;&gt;&lt;
+            <A HREF="{% url 'status:dashboard' %}" class="text-warning">admin</A>
+          </small>
+          </p>
         </div>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.2.1/js/material.min.js"></script>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.2.1/js/ripples.min.js"></script>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/Chart.js/0.2.0/Chart.min.js"></script>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/rivets/0.7.1/rivets.bundled.min.js"></script>
-        {% if STATUS_ANALYTICS %}
-            <script>
-                (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-                    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o), m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-                })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-                ga('create', '{{ STATUS_ANALYTICS }}', 'auto');
-                ga('send', 'pageview');
-            </script>
-        {% endif %}
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.1/js/bootstrap.min.js" integrity="sha512-UR25UO94eTnCVwjbXozyeVd6ZqpaAE9naiEUBK/A+QDbfSTQFhPGj5lOR6d8tsgbBk84Ggb5A3EkjsOgPRPcKA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         <script type="text/javascript">
             {% block extjs %}{% endblock %}
         </script>
